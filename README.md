@@ -1,2 +1,2 @@
-# QURAN-website
+# quarn-website
 read and listen QUARN 
