@@ -1257,16 +1257,7 @@
 
         // Render verses based on current translation
         function renderVerses() {
-           const reciterMap = {
-    'ar.alafasy': 'mishari_al_afasy',
-    'ar.abdulbasitmurattal': 'abdul_basit_murattal',
-    'ar.abdurrahmaansudais': 'abdurrahmaan_as-sudais',
-    'ar.mahermuaiqly': 'maher_al_muaiqly'
-};
-const reciterCode = reciterMap[state.reciter] || 'mishari_al_afasy';
-const surahPad = state.currentSurah.toString().padStart(3, '0');
-const versePad = verseNumber.toString().padStart(3, '0');
-const audioUrl = `https://everyayah.com/data/${reciterCode}/${surahPad}${versePad}.mp3`;
+            elements.versesContainer.innerHTML = '';
             
             state.verses.forEach((ayah, index) => {
                 const englishTranslation = state.englishTranslations[index];
@@ -1398,7 +1389,7 @@ const audioUrl = `https://everyayah.com/data/${reciterCode}/${surahPad}${versePa
             });
         }
 
-        // Play verse audio
+        // Play verse audio - FIXED VERSION WITH ALQURAN.CLOUD API
         async function playVerseAudio(verseNumber) {
             if (!state.audioEnabled) {
                 showNotification('Audio is disabled in settings');
@@ -1423,34 +1414,100 @@ const audioUrl = `https://everyayah.com/data/${reciterCode}/${surahPad}${versePa
                 elements.audioPlayer.classList.add('active');
             }
             
-            // Build audio URL
-            const audioUrl = `https://cdn.islamic.network/quran/audio/128/${state.reciter}/${state.currentSurah}/${verseNumber}.mp3`;
+            // FIX: Use AlQuran.cloud API which is CORS-friendly
+            // First get the audio URL from the API
+            const apiUrl = `https://api.alquran.cloud/v1/ayah/${state.currentSurah}:${verseNumber}/audio`;
             
             try {
-                // Set audio source
-                state.audioPlayer.src = audioUrl;
+                console.log('Fetching audio URL from:', apiUrl);
                 
-                // Play audio
-                await state.audioPlayer.play();
+                // Fetch the audio metadata from AlQuran.cloud
+                const response = await fetch(apiUrl);
+                const data = await response.json();
                 
-                // Update play button
-                elements.audioPlay.innerHTML = '<i class="fas fa-pause"></i> Pause';
-                
-                // Highlight current verse
-                document.querySelectorAll('.verse-card').forEach(card => {
-                    card.classList.remove('playing');
-                });
-                const currentVerse = document.getElementById(`ayah-${verseNumber}`);
-                if (currentVerse) {
-                    currentVerse.classList.add('playing');
-                    currentVerse.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                if (data.code === 200 && data.data && data.data.audio) {
+                    // Get the audio URL from the API response
+                    const audioUrl = data.data.audio;
+                    console.log('Audio URL received:', audioUrl);
+                    
+                    // Set audio source
+                    state.audioPlayer.src = audioUrl;
+                    
+                    // Play audio
+                    await state.audioPlayer.play();
+                    
+                    // Update play button
+                    elements.audioPlay.innerHTML = '<i class="fas fa-pause"></i> Pause';
+                    
+                    // Highlight current verse
+                    document.querySelectorAll('.verse-card').forEach(card => {
+                        card.classList.remove('playing');
+                    });
+                    const currentVerse = document.getElementById(`ayah-${verseNumber}`);
+                    if (currentVerse) {
+                        currentVerse.classList.add('playing');
+                        currentVerse.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }
+                    
+                    showNotification(`Playing ${surahName}, verse ${verseNumber}`);
+                    
+                } else {
+                    throw new Error('Audio URL not found in API response');
                 }
-                
-                showNotification(`Playing ${surahName}, verse ${verseNumber}`);
                 
             } catch (error) {
                 console.error('Error playing audio:', error);
-                showNotification('Error playing audio. Please try again.');
+                
+                // Fallback to everyayah.com if AlQuran.cloud fails
+                showNotification('Trying alternative audio source...');
+                
+                try {
+                    // Alternative audio source: everyayah.com
+                    const reciterMap = {
+                        'ar.alafasy': 'mishari_al_afasy',
+                        'ar.abdulbasitmurattal': 'abdul_basit_murattal',
+                        'ar.abdurrahmaansudais': 'abdurrahmaan_as-sudais',
+                        'ar.mahermuaiqly': 'maher_al_muaiqly'
+                    };
+                    
+                    const reciterCode = reciterMap[state.reciter] || 'mishari_al_afasy';
+                    const surahPad = state.currentSurah.toString().padStart(3, '0');
+                    const versePad = verseNumber.toString().padStart(3, '0');
+                    const fallbackUrl = `https://everyayah.com/data/${reciterCode}/${surahPad}${versePad}.mp3`;
+                    
+                    console.log('Trying fallback URL:', fallbackUrl);
+                    state.audioPlayer.src = fallbackUrl;
+                    await state.audioPlayer.play();
+                    
+                    elements.audioPlay.innerHTML = '<i class="fas fa-pause"></i> Pause';
+                    
+                    // Highlight current verse
+                    document.querySelectorAll('.verse-card').forEach(card => {
+                        card.classList.remove('playing');
+                    });
+                    const currentVerse = document.getElementById(`ayah-${verseNumber}`);
+                    if (currentVerse) {
+                        currentVerse.classList.add('playing');
+                    }
+                    
+                    showNotification(`Playing ${surahName}, verse ${verseNumber} (fallback source)`);
+                    
+                } catch (fallbackError) {
+                    console.error('Fallback audio also failed:', fallbackError);
+                    showNotification('Audio failed. Please try another reciter or check connection.');
+                    
+                    // Last resort: Text-to-Speech for Arabic
+                    if ('speechSynthesis' in window) {
+                        const verseText = state.verses.find(v => v.numberInSurah === verseNumber)?.text;
+                        if (verseText) {
+                            const utterance = new SpeechSynthesisUtterance(verseText);
+                            utterance.lang = 'ar-SA';
+                            utterance.rate = 0.8;
+                            speechSynthesis.speak(utterance);
+                            showNotification('Using text-to-speech for Arabic recitation');
+                        }
+                    }
+                }
             }
         }
 
