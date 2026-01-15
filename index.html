@@ -714,40 +714,29 @@
         function playVerseAudio(verseNumber) {
             if (!currentSurah) return;
             
-            // Check if this surah has Bismillah separately
-            const hasBismillah = surahsWithBismillah.includes(currentSurah);
-            
-            // For surahs with Bismillah (except Surah 1 where it's included in verse 1),
-            // we need to adjust the verse number for audio API
-            let audioVerseNumber = verseNumber;
-            
             const surahPad = currentSurah.toString().padStart(3, '0');
-            const versePad = audioVerseNumber.toString().padStart(3, '0');
+            const versePad = verseNumber.toString().padStart(3, '0');
             
-            // Try multiple audio sources
-            const audioSources = [
-                `https://everyayah.com/data/mishari_al_afasy/${surahPad}${versePad}.mp3`,
-                `https://server8.mp3quran.net/maher/Rewayat-Hafs-A-n-Assem/${surahPad}${versePad}.mp3`,
-                `https://cdn.islamic.network/quran/audio/128/ar.alafasy/${currentSurah}/${audioVerseNumber}.mp3`
-            ];
+            // Primary source: EveryAyah (highly reliable)
+            const source = `https://everyayah.com/data/Abdul_Basit_Murattal_64kbps/${surahPad}${versePad}.mp3`;
             
-            // Try each source until one works
-            let audioPlayed = false;
-            
-            audioSources.forEach((source, index) => {
-                if (!audioPlayed) {
-                    audioPlayer.src = source;
-                    audioPlayer.play().then(() => {
-                        audioPlayed = true;
-                        showNotification(`Playing verse ${verseNumber}`);
-                    }).catch(error => {
-                        console.log(`Audio source ${index + 1} failed:`, error);
-                        if (index === audioSources.length - 1 && !audioPlayed) {
-                            alert('Audio could not be played. Please try another verse or check your internet connection.');
-                        }
-                    });
-                }
-            });
+            audioPlayer.src = source;
+            audioPlayer.play()
+                .then(() => {
+                    showNotification(`Playing verse ${verseNumber}`);
+                })
+                .catch(error => {
+                    console.error('Audio playback failed:', error);
+                    // Fallback source
+                    const fallbackSource = `https://cdn.islamic.network/quran/audio/128/ar.alafasy/${currentSurah}/${verseNumber}.mp3`;
+                    audioPlayer.src = fallbackSource;
+                    audioPlayer.play()
+                        .then(() => showNotification(`Playing verse ${verseNumber}`))
+                        .catch(err => {
+                            console.error('Fallback audio also failed:', err);
+                            alert('Audio could not be played. Please check your connection.');
+                        });
+                });
         }
         
         // Play full surah audio (starts from verse 1)
