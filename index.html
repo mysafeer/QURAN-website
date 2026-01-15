@@ -1257,7 +1257,16 @@
 
         // Render verses based on current translation
         function renderVerses() {
-            elements.versesContainer.innerHTML = '';
+           const reciterMap = {
+    'ar.alafasy': 'mishari_al_afasy',
+    'ar.abdulbasitmurattal': 'abdul_basit_murattal',
+    'ar.abdurrahmaansudais': 'abdurrahmaan_as-sudais',
+    'ar.mahermuaiqly': 'maher_al_muaiqly'
+};
+const reciterCode = reciterMap[state.reciter] || 'mishari_al_afasy';
+const surahPad = state.currentSurah.toString().padStart(3, '0');
+const versePad = verseNumber.toString().padStart(3, '0');
+const audioUrl = `https://everyayah.com/data/${reciterCode}/${surahPad}${versePad}.mp3`;
             
             state.verses.forEach((ayah, index) => {
                 const englishTranslation = state.englishTranslations[index];
