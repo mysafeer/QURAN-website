@@ -1,1028 +1,386 @@
 <!DOCTYPE html>
-<html lang="en">
-<head><!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quran Website - Continuous Audio & Facts</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Quran - Complete Audio & Facts</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Amiri&family=Poppins:wght@300;400;600&family=Noto+Nastaliq+Urdu&display=swap" rel="stylesheet">
-</head>
-<body>
-    <!-- Audio Player Container -->
-    <div class="audio-player">
-        <audio id="quranAudio" controls>
-            <source src="https://download.quranicaudio.com/quran/mishaari_raashid_al_3afaasee/001.mp3" type="audio/mpeg">
-            Your browser does not support the audio element.
-        </audio>
-        <div class="audio-controls">
-            <button id="prevBtn"><i class="fas fa-backward"></i></button>
-            <button id="playPauseBtn"><i class="fas fa-play"></i></button>
-            <button id="nextBtn"><i class="fas fa-forward"></i></button>
-            <button id="continuousBtn" class="active"><i class="fas fa-infinity"></i> Continuous</button>
-            <select id="surahSelector">
-                <option value="1">Surah Al-Fatihah</option>
-                <option value="2">Surah Al-Baqarah</option>
-                <option value="36">Surah Ya-Sin</option>
-                <option value="55">Surah Ar-Rahman</option>
-                <option value="67">Surah Al-Mulk</option>
-            </select>
-        </div>
-    </div>
-
-    <!-- Navigation -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <div class="logo">
-                <i class="fas fa-quran"></i>
-                <span>القرآن الكريم</span>
-            </div>
-            <ul class="nav-menu">
-                <li><a href="#home" class="active"><i class="fas fa-home"></i> Home</a></li>
-                <li><a href="#facts"><i class="fas fa-lightbulb"></i> Quran Facts</a></li>
-                <li><a href="#audio"><i class="fas fa-music"></i> Audio</a></li>
-                <li><a href="#about"><i class="fas fa-info-circle"></i> About</a></li>
-            </ul>
-            <div class="language-switcher">
-                <button class="lang-btn active" data-lang="en">EN</button>
-                <button class="lang-btn" data-lang="ur">اردو</button>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Cover Page with Quran Facts -->
-    <section id="home" class="cover-page">
-        <div class="cover-overlay">
-            <div class="cover-content">
-                <h1 class="cover-title" data-en="Amazing Facts About The Holy Quran" data-ur="قرآن پاک کے حیرت انگیز حقائق">
-                    Amazing Facts About The Holy Quran
-                </h1>
-                <p class="cover-subtitle" data-en="Historical & Scientific Miracles Revealed" data-ur="تاریخی اور سائنسی معجزات">
-                    Historical & Scientific Miracles Revealed
-                </p>
-                <a href="#facts" class="explore-btn">
-                    <i class="fas fa-book-open"></i>
-                    <span data-en="Explore Facts" data-ur="حقائق دریافت کریں">Explore Facts</span>
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Quran Facts Section -->
-    <section id="facts" class="facts-section">
-        <div class="container">
-            <h2 class="section-title" data-en="Scientific & Historical Facts in Quran" data-ur="قرآن میں سائنسی اور تاریخی حقائق">
-                Scientific & Historical Facts in Quran
-            </h2>
-            <p class="section-subtitle" data-en="Discover the miracles revealed centuries before modern science" data-ur="جدید سائنس سے صدیوں پہلے ظاہر ہونے والے معجزات دریافت کریں">
-                Discover the miracles revealed centuries before modern science
-            </p>
-
-            <div class="facts-container">
-                <!-- Scientific Facts -->
-                <div class="fact-category">
-                    <h3><i class="fas fa-atom"></i> <span data-en="Scientific Miracles" data-ur="سائنسی معجزات">Scientific Miracles</span></h3>
-                    <div class="fact-card">
-                        <div class="fact-icon">
-                            <i class="fas fa-water"></i>
-                        </div>
-                        <div class="fact-content">
-                            <h4 data-en="Water Cycle" data-ur="پانی کا چکر">Water Cycle</h4>
-                            <p data-en="Quran 23:18: 'And We send down water from the sky in perfect measure...' describing the water cycle 1400 years ago." 
-                               data-ur="قرآن 23:18: 'اور ہم آسمان سے پانی مناسب مقدار میں اتارتے ہیں...' 1400 سال پہلے پانی کے چکر کی وضاحت کرتا ہے۔">
-                                Quran 23:18: "And We send down water from the sky in perfect measure..." describing the water cycle 1400 years ago.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="fact-card">
-                        <div class="fact-icon">
-                            <i class="fas fa-mountain"></i>
-                        </div>
-                        <div class="fact-content">
-                            <h4 data-en="Mountains as Pegs" data-ur="پہاڑ میخیں ہیں">Mountains as Pegs</h4>
-                            <p data-en="Quran 78:7: 'And the mountains as pegs?' Mountains have deep roots like pegs, discovered in modern geology." 
-                               data-ur="قرآن 78:7: 'اور پہاڑوں کو میخوں کی طرح؟' جدید ارضیات میں دریافت ہوا کہ پہاڑوں کی گہری جڑیں ہیں۔">
-                                Quran 78:7: "And the mountains as pegs?" Mountains have deep roots like pegs, discovered in modern geology.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Historical Facts -->
-                <div class="fact-category">
-                    <h3><i class="fas fa-landmark"></i> <span data-en="Historical Accuracy" data-ur="تاریخی درستگی">Historical Accuracy</span></h3>
-                    <div class="fact-card">
-                        <div class="fact-icon">
-                            <i class="fas fa-pharaoh"></i>
-                        </div>
-                        <div class="fact-content">
-                            <h4 data-en="Pharaoh's Body" data-ur="فرعون کی لاش">Pharaoh's Body</h4>
-                            <p data-en="Quran 10:92: 'Today We will preserve your body...' Pharaoh's body was discovered in 1898, preserved for thousands of years." 
-                               data-ur="قرآن 10:92: 'آج ہم تیرا جسم محفوظ کر دیں گے...' فرعون کی لاش 1898 میں دریافت ہوئی، ہزاروں سال سے محفوظ تھی۔">
-                                Quran 10:92: "Today We will preserve your body..." Pharaoh's body was discovered in 1898, preserved for thousands of years.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="fact-card">
-                        <div class="fact-icon">
-                            <i class="fas fa-city"></i>
-                        </div>
-                        <div class="fact-content">
-                            <h4 data-en="Lost City of Iram" data-ur="کھوئی ہوئی شہر ارم">Lost City of Iram</h4>
-                            <p data-en="Quran 89:7 mentions the city of Iram with pillars. Discovered in 1990s by NASA satellite imagery." 
-                               data-ur="قرآن 89:7 میں ستونوں والے شہر ارم کا ذکر ہے۔ 1990 کی دہائی میں NASA کے سیٹلائٹ امیجری سے دریافت ہوا۔">
-                                Quran 89:7 mentions the city of Iram with pillars. Discovered in 1990s by NASA satellite imagery.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Additional Sections -->
-    <section id="audio" class="audio-section">
-        <div class="container">
-            <h2 class="section-title" data-en="Continuous Quran Audio" data-ur="مسلسل قرآن آڈیو">Continuous Quran Audio</h2>
-            <div class="audio-info">
-                <p data-en="Now playing continuously from Surah 1 to 114. Select any surah to start from there." 
-                   data-ur="اب سورہ 1 سے 114 تک مسلسل چل رہا ہے۔ کسی بھی سورت کو منتخب کریں وہاں سے شروع کرنے کے لیے۔">
-                    Now playing continuously from Surah 1 to 114. Select any surah to start from there.
-                </p>
-            </div>
-        </div>
-    </section>
-
-    <footer>
-        <div class="container">
-            <p>© 2024 Quran Website | Made with <i class="fas fa-heart"></i> for spreading knowledge</p>
-        </div>
-    </footer>
-
-    <script src="script.js"></script>
-</body>
-</html>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>القرآن الكريم - The Noble Quran</title>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Poppins:wght@300;400;500;600&family=Noto+Nastaliq+Urdu&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary: #1a5f2a;
-            --secondary: #d4af37;
-            --accent: #8b0000;
-            --bg-light: #f5f7f2;
-            --text-light: #2d3748;
-            --card-light: #ffffff;
-        }
-        
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
-        body {
-            font-family: 'Inter', sans-serif;
-            background: var(--bg-light);
-            color: var(--text-light);
-            padding: 20px;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        header {
-            text-align: center;
-            padding: 30px 0;
-            border-bottom: 3px solid var(--secondary);
-            margin-bottom: 30px;
-        }
-        
-        h1 {
-            color: var(--primary);
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-        }
-        
-        .subtitle {
-            color: #666;
-            font-size: 1.2rem;
-        }
-        
-        .surah-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 40px;
-        }
-        
-        .surah-card {
-            background: var(--card-light);
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            cursor: pointer;
-            transition: transform 0.3s ease;
-            border-left: 4px solid var(--primary);
-        }
-        
-        .surah-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-        }
-        
-        .surah-arabic {
-            font-family: 'Amiri', serif;
-            font-size: 1.8rem;
-            color: var(--primary);
-            margin-bottom: 10px;
-        }
-        
-        .surah-english {
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-        
-        .surah-number {
-            background: var(--secondary);
-            color: #000;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-        }
-        
-        #content {
-            display: none;
-        }
-        
-        .verse {
-            background: white;
-            padding: 25px;
-            margin-bottom: 25px;
-            border-radius: 10px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-        
-        .arabic-text {
-            font-family: 'Amiri', serif;
-            font-size: 2.2rem;
-            text-align: right;
-            line-height: 1.8;
-            margin-bottom: 15px;
-            color: #1a472a;
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 8px;
-            border-right: 3px solid var(--secondary);
-        }
-        
-        .bismillah {
-            font-family: 'Amiri', serif;
-            font-size: 2.8rem;
-            text-align: center;
-            line-height: 1.8;
-            margin: 30px 0;
-            color: var(--primary);
-            padding: 25px;
-            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(26, 95, 42, 0.1));
-            border-radius: 12px;
-            border: 2px solid var(--secondary);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .bismillah::before {
-            content: '﴿';
-            position: absolute;
-            top: 10px;
-            right: 20px;
-            font-size: 3rem;
-            color: var(--secondary);
-            opacity: 0.3;
-        }
-        
-        .bismillah::after {
-            content: '﴾';
-            position: absolute;
-            bottom: 10px;
-            left: 20px;
-            font-size: 3rem;
-            color: var(--secondary);
-            opacity: 0.3;
-        }
-        
-        .translation {
-            font-size: 1.1rem;
-            line-height: 1.6;
-            color: #444;
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 8px;
-            border-left: 3px solid var(--primary);
-            margin-bottom: 10px;
-        }
-        
-        .urdu-translation {
-            font-family: 'Amiri', serif;
-            font-size: 1.3rem;
-            line-height: 1.8;
-            color: var(--accent);
-            padding: 15px;
-            background: rgba(139, 0, 0, 0.05);
-            border-radius: 8px;
-            border-right: 3px solid var(--accent);
-            text-align: right;
-            direction: rtl;
-            margin-top: 10px;
-        }
-        
-        .translation-header {
-            font-weight: 600;
-            color: var(--primary);
-            margin-bottom: 5px;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        
-        .urdu-header {
-            color: var(--accent);
-        }
-        
-        .verse-number {
-            display: inline-block;
-            background: var(--primary);
-            color: white;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            text-align: center;
-            line-height: 40px;
-            margin-right: 10px;
-            font-weight: bold;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-        }
-        
-        .verse-number:hover {
-            transform: scale(1.1);
-            background: var(--secondary);
-            color: #000;
-        }
-        
-        .back-btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 1rem;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            transition: all 0.3s ease;
-        }
-        
-        .back-btn:hover {
-            background: var(--secondary);
-            color: #000;
-            transform: translateX(-5px);
-        }
-        
-        .controls {
-            display: flex;
-            gap: 15px;
-            margin: 20px 0;
-            flex-wrap: wrap;
-        }
-        
-        .btn {
-            padding: 12px 24px;
-            border-radius: 6px;
-            border: none;
-            cursor: pointer;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            transition: all 0.3s ease;
-        }
-        
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-        
-        .btn-primary {
-            background: var(--primary);
-            color: white;
-        }
-        
-        .btn-secondary {
-            background: var(--secondary);
-            color: #000;
-        }
-        
-        .btn-accent {
-            background: var(--accent);
-            color: white;
-        }
-        
-        .translation-tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        
-        .tab-btn {
-            padding: 10px 20px;
-            border: 2px solid var(--primary);
-            background: white;
-            color: var(--primary);
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-        
-        .tab-btn.active {
-            background: var(--primary);
-            color: white;
-        }
-        
-        .tab-btn:hover:not(.active) {
-            background: rgba(26, 95, 42, 0.1);
-        }
-        
-        .surah-header {
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid var(--secondary);
-            position: relative;
-        }
-        
-        .surah-header::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 100px;
-            height: 4px;
-            background: var(--primary);
-            border-radius: 2px;
-        }
-        
-        .surah-meta {
-            display: flex;
-            gap: 20px;
-            margin-top: 15px;
-            flex-wrap: wrap;
-        }
-        
-        .meta-item {
-            padding: 8px 16px;
-            background: rgba(212, 175, 55, 0.1);
-            border-radius: 20px;
-            font-size: 0.9rem;
-            color: #666;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        @media (max-width: 768px) {
-            .surah-grid {
-                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            }
-            
-            .arabic-text {
-                font-size: 1.8rem;
-            }
-            
-            .bismillah {
-                font-size: 2.2rem;
-                padding: 20px;
-            }
-            
-            .controls {
-                flex-direction: column;
-            }
-            
-            .btn {
-                width: 100%;
-                justify-content: center;
-            }
-        }
-        
-        .loading {
-            text-align: center;
-            padding: 40px;
-            grid-column: 1/-1;
-        }
-        
-        .spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid var(--primary);
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        .empty-state {
-            text-align: center;
-            padding: 40px;
-            color: #666;
-        }
-        
-        .empty-state i {
-            font-size: 48px;
-            color: var(--secondary);
-            margin-bottom: 20px;
-        }
+        /* CSS will be embedded for immediate effect */
     </style>
 </head>
 <body>
-    <header>
-        <h1><i class="fas fa-quran"></i> القرآن الكريم</h1>
-        <div class="subtitle">The Noble Quran - Read & Listen with Urdu Translation</div>
-    </header>
-    
-    <div id="surah-list">
-        <div class="surah-grid" id="surah-grid">
-            <div class="loading">
-                <div class="spinner"></div>
-                <div>Loading Surahs...</div>
+    <!-- Fixed Audio Player -->
+    <div class="fixed-audio-player">
+        <div class="audio-container">
+            <audio id="quranAudio" controls>
+                <source src="https://download.quranicaudio.com/quran/mishaari_raashid_al_3afaasee/001.mp3" type="audio/mpeg">
+            </audio>
+            <div class="audio-extra-controls">
+                <button id="fullSurahBtn" class="control-btn active">
+                    <i class="fas fa-play-circle"></i> Play Full Surah
+                </button>
+                <button id="continuousBtn" class="control-btn">
+                    <i class="fas fa-infinity"></i> Continuous
+                </button>
+                <div class="surah-selector">
+                    <select id="surahSelector">
+                        <option value="">Select Surah</option>
+                        <option value="1">1. Al-Fatihah (الفاتحة)</option>
+                        <option value="2">2. Al-Baqarah (البقرة)</option>
+                        <option value="36">36. Ya-Sin (يس)</option>
+                        <option value="55">55. Ar-Rahman (الرحمن)</option>
+                        <option value="67">67. Al-Mulk (الملك)</option>
+                    </select>
+                </div>
             </div>
         </div>
     </div>
-    
-    <div id="content">
-        <button class="back-btn" onclick="showSurahList()">
-            <i class="fas fa-arrow-left"></i> Back to Surahs
-        </button>
-        
-        <div class="surah-header">
-            <h2 id="surah-title">Surah Name</h2>
-            <div class="surah-meta" id="surah-meta"></div>
+
+    <!-- Main Header -->
+    <header class="main-header">
+        <div class="header-container">
+            <div class="logo-section">
+                <div class="logo">
+                    <i class="fas fa-quran"></i>
+                    <h1>القرآن الكريم</h1>
+                    <p class="tagline">Guidance for Mankind</p>
+                </div>
+            </div>
+            
+            <nav class="main-nav">
+                <ul class="nav-list">
+                    <li><a href="#home" class="nav-link active"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="#facts" class="nav-link"><i class="fas fa-lightbulb"></i> Quran Facts</a></li>
+                    <li><a href="#listen" class="nav-link"><i class="fas fa-headphones"></i> Listen</a></li>
+                    <li><a href="#about" class="nav-link"><i class="fas fa-info-circle"></i> About</a></li>
+                </ul>
+            </nav>
+            
+            <div class="language-toggle">
+                <button class="lang-btn active" data-lang="en">English</button>
+                <button class="lang-btn" data-lang="ur">اردو</button>
+            </div>
         </div>
-        
-        <div class="translation-tabs">
-            <button class="tab-btn active" data-translation="english">English Translation</button>
-            <button class="tab-btn" data-translation="urdu">اردو ترجمہ</button>
-            <button class="tab-btn" data-translation="both">Both Translations</button>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Hero Section -->
+        <section id="home" class="hero-section">
+            <div class="hero-overlay">
+                <div class="hero-content">
+                    <h2 class="hero-title" data-en="Discover the Miracles of Quran" data-ur="قرآن کے معجزات دریافت کریں">
+                        Discover the Miracles of Quran
+                    </h2>
+                    <p class="hero-subtitle" data-en="Historical and Scientific Facts Revealed 1400 Years Ago" data-ur="1400 سال پہلے ظاہر ہونے والے تاریخی اور سائنسی حقائق">
+                        Historical and Scientific Facts Revealed 1400 Years Ago
+                    </p>
+                    <div class="hero-buttons">
+                        <a href="#facts" class="btn-primary">
+                            <i class="fas fa-book-open"></i>
+                            <span data-en="Explore Facts" data-ur="حقائق دیکھیں">Explore Facts</span>
+                        </a>
+                        <a href="#listen" class="btn-secondary">
+                            <i class="fas fa-play"></i>
+                            <span data-en="Listen Now" data-ur="اب سنیں">Listen Now</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quick Facts Cards -->
+        <section class="quick-facts">
+            <div class="container">
+                <h3 class="section-heading" data-en="Amazing Quran Facts" data-ur="قرآن کے حیرت انگیز حقائق">
+                    Amazing Quran Facts
+                </h3>
+                <div class="facts-grid">
+                    <div class="fact-card">
+                        <div class="fact-icon">
+                            <i class="fas fa-atom"></i>
+                        </div>
+                        <h4 data-en="Scientific Accuracy" data-ur="سائنسی درستگی">Scientific Accuracy</h4>
+                        <p data-en="Multiple scientific facts mentioned 1400 years before discovery" 
+                           data-ur="متعدد سائنسی حقائق دریافت سے 1400 سال پہلے بیان کیے گئے">
+                            Multiple scientific facts mentioned 1400 years before discovery
+                        </p>
+                    </div>
+                    
+                    <div class="fact-card">
+                        <div class="fact-icon">
+                            <i class="fas fa-history"></i>
+                        </div>
+                        <h4 data-en="Historical Precision" data-ur="تاریخی صحت">Historical Precision</h4>
+                        <p data-en="Historical events confirmed by modern archaeology" 
+                           data-ur="تاریخی واقعات جدید آثار قدیمہ سے تصدیق شدہ">
+                            Historical events confirmed by modern archaeology
+                        </p>
+                    </div>
+                    
+                    <div class="fact-card">
+                        <div class="fact-icon">
+                            <i class="fas fa-calculator"></i>
+                        </div>
+                        <h4 data-en="Numerical Miracles" data-ur="عددی معجزات">Numerical Miracles</h4>
+                        <p data-en="Mathematical patterns and word repetitions" 
+                           data-ur="ریاضیاتی پیٹرن اور الفاظ کی تکرار">
+                            Mathematical patterns and word repetitions
+                        </p>
+                    </div>
+                    
+                    <div class="fact-card">
+                        <div class="fact-icon">
+                            <i class="fas fa-globe"></i>
+                        </div>
+                        <h4 data-en="Preserved Text" data-ur="محفوظ متن">Preserved Text</h4>
+                        <p data-en="Unchanged since revelation, memorized by millions" 
+                           data-ur="نزول سے اب تک غیر تبدیل شدہ، لاکھوں لوگوں نے حفظ کیا">
+                            Unchanged since revelation, memorized by millions
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Detailed Facts Section -->
+        <section id="facts" class="detailed-facts">
+            <div class="container">
+                <h3 class="section-heading" data-en="Detailed Scientific & Historical Facts" data-ur="تفصیلی سائنسی اور تاریخی حقائق">
+                    Detailed Scientific & Historical Facts
+                </h3>
+                
+                <div class="fact-categories">
+                    <!-- Scientific Facts -->
+                    <div class="category">
+                        <div class="category-header">
+                            <i class="fas fa-flask"></i>
+                            <h4 data-en="Scientific Miracles" data-ur="سائنسی معجزات">Scientific Miracles</h4>
+                        </div>
+                        
+                        <div class="fact-item">
+                            <div class="fact-number">01</div>
+                            <div class="fact-details">
+                                <h5 data-en="Embryology" data-ur="علم اجنہ">Embryology</h5>
+                                <p data-en="Quran 23:14 accurately describes stages of embryonic development matching modern science." 
+                                   data-ur="قرآن 23:14 جنین کی نشوونما کے مراحل درست طور پر بیان کرتا ہے جو جدید سائنس سے میل کھاتا ہے۔">
+                                    Quran 23:14 accurately describes stages of embryonic development matching modern science.
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="fact-item">
+                            <div class="fact-number">02</div>
+                            <div class="fact-details">
+                                <h5 data-en="Water Cycle" data-ur="پانی کا چکر">Water Cycle</h5>
+                                <p data-en="Quran 23:18 describes complete water cycle 1400 years before scientific discovery." 
+                                   data-ur="قرآن 23:18 سائنسی دریافت سے 1400 سال پہلے پانی کے مکمل چکر کی وضاحت کرتا ہے۔">
+                                    Quran 23:18 describes complete water cycle 1400 years before scientific discovery.
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="fact-item">
+                            <div class="fact-number">03</div>
+                            <div class="fact-details">
+                                <h5 data-en="Expanding Universe" data-ur="پھیلتا ہوا کائنات">Expanding Universe</h5>
+                                <p data-en="Quran 51:47 mentions universe expansion, discovered in 20th century." 
+                                   data-ur="قرآن 51:47 کائنات کے پھیلاؤ کا ذکر کرتا ہے، جو بیسویں صدی میں دریافت ہوا۔">
+                                    Quran 51:47 mentions universe expansion, discovered in 20th century.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Historical Facts -->
+                    <div class="category">
+                        <div class="category-header">
+                            <i class="fas fa-landmark"></i>
+                            <h4 data-en="Historical Accuracy" data-ur="تاریخی درستگی">Historical Accuracy</h4>
+                        </div>
+                        
+                        <div class="fact-item">
+                            <div class="fact-number">01</div>
+                            <div class="fact-details">
+                                <h5 data-en="Pharaoh's Body" data-ur="فرعون کی لاش">Pharaoh's Body</h5>
+                                <p data-en="Quran 10:92 prophesied preservation of Pharaoh's body, discovered in 1898." 
+                                   data-ur="قرآن 10:92 نے فرعون کی لاش کے محفوظ ہونے کی پیشنگوئی کی، جو 1898 میں دریافت ہوئی۔">
+                                    Quran 10:92 prophesied preservation of Pharaoh's body, discovered in 1898.
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="fact-item">
+                            <div class="fact-number">02</div>
+                            <div class="fact-details">
+                                <h5 data-en="City of Iram" data-ur="شہر ارم">City of Iram</h5>
+                                <p data-en="Lost city mentioned in Quran 89:7, discovered in 1990s by satellite imagery." 
+                                   data-ur="قرآن 89:7 میں مذکور کھوئی ہوئی شہر، 1990 کی دہائی میں سیٹلائٹ تصاویر سے دریافت ہوئی۔">
+                                    Lost city mentioned in Quran 89:7, discovered in 1990s by satellite imagery.
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="fact-item">
+                            <div class="fact-number">03</div>
+                            <div class="fact-details">
+                                <h5 data-en="Dead Sea" data-ur="بحیرہ مردار">Dead Sea</h5>
+                                <p data-en="Quran's description of destroyed civilizations matches Dead Sea archaeological finds." 
+                                   data-ur="قرآن کی تباہ شدہ تہذیبوں کی وضاحت بحیرہ مردار کے آثار قدیمہ سے میل کھاتی ہے۔">
+                                    Quran's description of destroyed civilizations matches Dead Sea archaeological finds.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Listen Section -->
+        <section id="listen" class="listen-section">
+            <div class="container">
+                <h3 class="section-heading" data-en="Listen to Complete Quran" data-ur="مکمل قرآن سنیں">
+                    Listen to Complete Quran
+                </h3>
+                
+                <div class="listen-options">
+                    <div class="option-card">
+                        <div class="option-icon">
+                            <i class="fas fa-play-circle"></i>
+                        </div>
+                        <h4 data-en="Play Full Surah" data-ur="مکمل سورہ سنیں">Play Full Surah</h4>
+                        <p data-en="Listen to complete Surah from beginning to end" 
+                           data-ur="مکمل سورہ شروع سے آخر تک سنیں">
+                            Listen to complete Surah from beginning to end
+                        </p>
+                        <button class="option-btn" id="fullSurahOption">
+                            <i class="fas fa-play"></i>
+                            <span data-en="Select & Play" data-ur="منتخب کریں اور سنیں">Select & Play</span>
+                        </button>
+                    </div>
+                    
+                    <div class="option-card">
+                        <div class="option-icon">
+                            <i class="fas fa-infinity"></i>
+                        </div>
+                        <h4 data-en="Continuous Play" data-ur="مسلسل سنیں">Continuous Play</h4>
+                        <p data-en="Play all Surahs continuously from 1 to 114" 
+                           data-ur="تمام سورتیں مسلسل 1 سے 114 تک سنیں">
+                            Play all Surahs continuously from 1 to 114
+                        </p>
+                        <button class="option-btn" id="continuousOption">
+                            <i class="fas fa-play"></i>
+                            <span data-en="Start Continuous" data-ur="مسلسل شروع کریں">Start Continuous</span>
+                        </button>
+                    </div>
+                    
+                    <div class="option-card">
+                        <div class="option-icon">
+                            <i class="fas fa-random"></i>
+                        </div>
+                        <h4 data-en="Select Surah" data-ur="سورہ منتخب کریں">Select Surah</h4>
+                        <p data-en="Choose specific Surah from dropdown menu" 
+                           data-ur="ڈراپ ڈاؤن مینو سے مخصوص سورہ منتخب کریں">
+                            Choose specific Surah from dropdown menu
+                        </p>
+                        <select class="surah-dropdown" id="listenSurahSelector">
+                            <option value="" data-en="Select a Surah" data-ur="سورہ منتخب کریں">Select a Surah</option>
+                            <option value="1">1. Al-Fatihah</option>
+                            <option value="2">2. Al-Baqarah</option>
+                            <option value="36">36. Ya-Sin</option>
+                            <option value="55">55. Ar-Rahman</option>
+                            <option value="67">67. Al-Mulk</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="now-playing">
+                    <h4 data-en="Now Playing" data-ur="اب سن رہے ہیں">Now Playing</h4>
+                    <div class="playing-info">
+                        <div class="playing-surah" id="currentSurahDisplay">
+                            <span data-en="Surah:" data-ur="سورہ:">Surah:</span>
+                            <strong>Al-Fatihah (1)</strong>
+                        </div>
+                        <div class="playing-mode" id="currentModeDisplay">
+                            <span data-en="Mode:" data-ur="موڈ:">Mode:</span>
+                            <strong>Full Surah</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Additional Resources -->
+        <section class="resources-section">
+            <div class="container">
+                <h3 class="section-heading" data-en="Additional Resources" data-ur="اضافی ذرائع">
+                    Additional Resources
+                </h3>
+                <div class="resources-grid">
+                    <a href="#" class="resource-link">
+                        <i class="fas fa-book"></i>
+                        <span data-en="Quran Translation" data-ur="قرآن ترجمہ">Quran Translation</span>
+                    </a>
+                    <a href="#" class="resource-link">
+                        <i class="fas fa-graduation-cap"></i>
+                        <span data-en="Tafsir" data-ur="تفسیر">Tafsir</span>
+                    </a>
+                    <a href="#" class="resource-link">
+                        <i class="fas fa-microphone"></i>
+                        <span data-en="Recitations" data-ur="تلاوتیں">Recitations</span>
+                    </a>
+                    <a href="#" class="resource-link">
+                        <i class="fas fa-search"></i>
+                        <span data-en="Search Quran" data-ur="قرآن تلاش کریں">Search Quran</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <i class="fas fa-quran"></i>
+                    <h3>القرآن الكريم</h3>
+                    <p data-en="Source of Guidance & Wisdom" data-ur="ہدایت اور حکمت کا سرچشمہ">
+                        Source of Guidance & Wisdom
+                    </p>
+                </div>
+                
+                <div class="footer-links">
+                    <h4 data-en="Quick Links" data-ur="فوری لنکس">Quick Links</h4>
+                    <a href="#home"><i class="fas fa-home"></i> <span data-en="Home" data-ur="ہوم">Home</span></a>
+                    <a href="#facts"><i class="fas fa-lightbulb"></i> <span data-en="Facts" data-ur="حقائق">Facts</span></a>
+                    <a href="#listen"><i class="fas fa-headphones"></i> <span data-en="Listen" data-ur="سنیں">Listen</span></a>
+                </div>
+                
+                <div class="footer-info">
+                    <h4 data-en="Contact" data-ur="رابطہ">Contact</h4>
+                    <p><i class="fas fa-envelope"></i> info@quranwebsite.com</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>© 2024 Quran Website. <span data-en="All rights reserved." data-ur="تمام حقوق محفوظ ہیں۔">All rights reserved.</span></p>
+                <p data-en="Made with ❤️ for spreading Quranic knowledge" data-ur="قرآنی علم پھیلانے کے لئے ❤️ سے بنایا گیا">
+                    Made with ❤️ for spreading Quranic knowledge
+                </p>
+            </div>
         </div>
-        
-        <div class="controls">
-            <button class="btn btn-primary" onclick="playFullSurahAudio()">
-                <i class="fas fa-play-circle"></i> Play Full Surah
-            </button>
-            <button class="btn btn-secondary" onclick="toggleTranslation()">
-                <i class="fas fa-eye"></i> Toggle Translation
-            </button>
-            <button class="btn btn-accent" onclick="scrollToBismillah()">
-                <i class="fas fa-star"></i> Go to Bismillah
-            </button>
-        </div>
-        
-        <div id="bismillah-container"></div>
-        
-        <div id="verses-container">
-            <!-- Verses will be loaded here -->
-        </div>
-    </div>
-    
-    <audio id="audio-player" style="display: none;"></audio>
-    
+    </footer>
+
     <script>
-        // State
-        let currentSurah = null;
-        let currentSurahData = null;
-        let showTranslation = true;
-        let currentTranslation = 'english'; // english, urdu, both
-        let surahs = [];
-        let verses = [];
-        let englishTranslations = [];
-        let urduTranslations = [];
-        
-        // Surahs that start with Bismillah (all except Surah 9 - At-Tawbah)
-        const surahsWithBismillah = Array.from({length: 114}, (_, i) => i + 1).filter(num => num !== 9);
-        
-        // DOM Elements
-        const surahList = document.getElementById('surah-list');
-        const content = document.getElementById('content');
-        const surahGrid = document.getElementById('surah-grid');
-        const versesContainer = document.getElementById('verses-container');
-        const bismillahContainer = document.getElementById('bismillah-container');
-        const surahTitle = document.getElementById('surah-title');
-        const surahMeta = document.getElementById('surah-meta');
-        const audioPlayer = document.getElementById('audio-player');
-        const translationTabs = document.querySelectorAll('.tab-btn');
-        
-        // Initialize
-        async function init() {
-            await loadSurahs();
-            setupEventListeners();
-        }
-        
-        // Setup event listeners
-        function setupEventListeners() {
-            // Translation tabs
-            translationTabs.forEach(tab => {
-                tab.addEventListener('click', () => {
-                    // Remove active class from all tabs
-                    translationTabs.forEach(t => t.classList.remove('active'));
-                    // Add active class to clicked tab
-                    tab.classList.add('active');
-                    // Update translation mode
-                    currentTranslation = tab.dataset.translation;
-                    // Re-render verses if we have a surah loaded
-                    if (currentSurah) {
-                        renderVerses();
-                    }
-                });
-            });
-        }
-        
-        // Load Surahs
-        async function loadSurahs() {
-            try {
-                const response = await fetch('https://api.alquran.cloud/v1/surah');
-                const data = await response.json();
-                surahs = data.data;
-                renderSurahs();
-            } catch (error) {
-                surahGrid.innerHTML = `
-                    <div class="empty-state">
-                        <i class="fas fa-exclamation-triangle"></i>
-                        <h3>Failed to load Surahs</h3>
-                        <p>Please check your internet connection</p>
-                        <button onclick="loadSurahs()" style="background: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 6px; margin-top: 20px; cursor: pointer;">
-                            <i class="fas fa-redo"></i> Retry
-                        </button>
-                    </div>
-                `;
-            }
-        }
-        
-        // Render Surahs
-        function renderSurahs() {
-            surahGrid.innerHTML = '';
-            surahs.forEach(surah => {
-                const card = document.createElement('div');
-                card.className = 'surah-card';
-                card.innerHTML = `
-                    <div class="surah-arabic">${surah.name}</div>
-                    <div class="surah-english">${surah.englishName}</div>
-                    <div style="color: #666; font-size: 0.9rem; margin-bottom: 10px;">${surah.englishNameTranslation}</div>
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <span style="color: #888; font-size: 0.9rem;">${surah.revelationType} • ${surah.numberOfAyahs} verses</span>
-                        <span class="surah-number">${surah.number}</span>
-                    </div>
-                `;
-                card.onclick = () => loadSurah(surah.number);
-                surahGrid.appendChild(card);
-            });
-        }
-        
-        // Load a Surah
-        async function loadSurah(id) {
-            currentSurah = id;
-            
-            // Show loading
-            content.style.display = 'block';
-            surahList.style.display = 'none';
-            versesContainer.innerHTML = `
-                <div class="loading">
-                    <div class="spinner"></div>
-                    <div>Loading Surah...</div>
-                </div>
-            `;
-            bismillahContainer.innerHTML = '';
-            
-            try {
-                // Fetch all data in parallel for better performance
-                const [surahRes, versesRes, englishRes, urduRes] = await Promise.all([
-                    fetch(`https://api.alquran.cloud/v1/surah/${id}`),
-                    fetch(`https://api.alquran.cloud/v1/surah/${id}/quran-uthmani`),
-                    fetch(`https://api.alquran.cloud/v1/surah/${id}/en.sahih`),
-                    fetch(`https://api.alquran.cloud/v1/surah/${id}/ur.jalandhry`) // Urdu translation
-                ]);
-                
-                const surahData = await surahRes.json();
-                const versesData = await versesRes.json();
-                const englishData = await englishRes.json();
-                const urduData = urduRes.ok ? await urduRes.json() : null;
-                
-                currentSurahData = surahData.data;
-                verses = versesData.data.ayahs;
-                englishTranslations = englishData.data.ayahs;
-                urduTranslations = urduData ? urduData.data.ayahs : [];
-                
-                // Update header
-                updateSurahHeader();
-                
-                // Show Bismillah if this surah has it (all except Surah 9)
-                if (surahsWithBismillah.includes(id)) {
-                    showBismillah();
-                }
-                
-                // Render verses
-                renderVerses();
-                
-            } catch (error) {
-                console.error('Error loading surah:', error);
-                versesContainer.innerHTML = `
-                    <div class="empty-state">
-                        <i class="fas fa-exclamation-triangle"></i>
-                        <h3>Failed to load Surah</h3>
-                        <p>Please try again later</p>
-                        <button onclick="loadSurah(${id})" style="background: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 6px; margin-top: 20px; cursor: pointer;">
-                            <i class="fas fa-redo"></i> Retry
-                        </button>
-                    </div>
-                `;
-            }
-        }
-        
-        // Update surah header
-        function updateSurahHeader() {
-            const surah = currentSurahData;
-            surahTitle.textContent = `${surah.number}. ${surah.englishName} (${surah.name})`;
-            
-            surahMeta.innerHTML = `
-                <div class="meta-item">
-                    <i class="fas fa-map-marker-alt"></i>
-                    ${surah.revelationType}
-                </div>
-                <div class="meta-item">
-                    <i class="fas fa-hashtag"></i>
-                    ${surah.numberOfAyahs} verses
-                </div>
-                <div class="meta-item">
-                    <i class="fas fa-bookmark"></i>
-                    Juz ${Math.ceil(surah.number / 4)}
-                </div>
-            `;
-        }
-        
-        // Show Bismillah
-        function showBismillah() {
-            bismillahContainer.innerHTML = `
-                <div class="bismillah">
-                    بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ
-                </div>
-                <div style="text-align: center; margin-bottom: 30px;">
-                    <div class="translation">
-                        <div class="translation-header">English Translation</div>
-                        In the name of Allah, the Entirely Merciful, the Especially Merciful.
-                    </div>
-                    <div class="urdu-translation">
-                        <div class="translation-header urdu-header">اردو ترجمہ</div>
-                        شروع کرتا ہوں اللہ کے نام سے جو بڑا مہربان نہایت رحم والا ہے۔
-                    </div>
-                </div>
-            `;
-        }
-        
-        // Render Verses
-        function renderVerses() {
-            versesContainer.innerHTML = '';
-            
-            // Check if this surah has Bismillah
-            const hasBismillah = surahsWithBismillah.includes(currentSurah);
-            
-            // Start from verse 1, but if surah has Bismillah and it's Surah 1 (Al-Fatihah),
-            // the first verse already includes Bismillah
-            verses.forEach((ayah, index) => {
-                // For Surah 1, verse 1 already includes Bismillah in the text
-                // For other surahs with Bismillah, start from verse 1
-                // For Surah 9 (no Bismillah), start from verse 1
-                
-                const verseDiv = document.createElement('div');
-                verseDiv.className = 'verse';
-                verseDiv.id = `ayah-${ayah.numberInSurah}`;
-                
-                const englishTranslation = englishTranslations[index];
-                const urduTranslation = urduTranslations[index] || { text: 'اردو ترجمہ دستیاب نہیں' };
-                
-                let translationContent = '';
-                if (showTranslation) {
-                    switch(currentTranslation) {
-                        case 'english':
-                            translationContent = `
-                                <div class="translation">
-                                    <div class="translation-header">Sahih International Translation</div>
-                                    ${englishTranslation.text}
-                                </div>
-                            `;
-                            break;
-                        case 'urdu':
-                            translationContent = `
-                                <div class="urdu-translation">
-                                    <div class="translation-header urdu-header">اردو ترجمہ</div>
-                                    ${urduTranslation.text}
-                                </div>
-                            `;
-                            break;
-                        case 'both':
-                            translationContent = `
-                                <div class="translation">
-                                    <div class="translation-header">Sahih International Translation</div>
-                                    ${englishTranslation.text}
-                                </div>
-                                <div class="urdu-translation">
-                                    <div class="translation-header urdu-header">اردو ترجمہ</div>
-                                    ${urduTranslation.text}
-                                </div>
-                            `;
-                            break;
-                    }
-                }
-                
-                verseDiv.innerHTML = `
-                    <div style="display: flex; align-items: center; margin-bottom: 15px;">
-                        <span class="verse-number" onclick="playVerseAudio(${ayah.numberInSurah})" title="Click to play audio">
-                            ${ayah.numberInSurah}
-                        </span>
-                        <div style="flex: 1;"></div>
-                        <button onclick="shareVerse(${ayah.numberInSurah})" style="background: none; border: none; color: var(--primary); cursor: pointer; padding: 5px 10px;" title="Share this verse">
-                            <i class="fas fa-share-alt"></i>
-                        </button>
-                        <button onclick="bookmarkVerse(${ayah.numberInSurah})" style="background: none; border: none; color: var(--secondary); cursor: pointer; padding: 5px 10px;" title="Bookmark this verse">
-                            <i class="fas fa-bookmark"></i>
-                        </button>
-                    </div>
-                    <div class="arabic-text">${ayah.text}</div>
-                    ${translationContent}
-                `;
-                
-                versesContainer.appendChild(verseDiv);
-            });
-        }
-        
-        // Play Audio for specific verse
-        function playVerseAudio(verseNumber) {
-            if (!currentSurah) return;
-            
-            const surahPad = currentSurah.toString().padStart(3, '0');
-            const versePad = verseNumber.toString().padStart(3, '0');
-            
-            // Primary source: EveryAyah (highly reliable)
-            const source = `https://everyayah.com/data/Abdul_Basit_Murattal_64kbps/${surahPad}${versePad}.mp3`;
-            
-            audioPlayer.src = source;
-            audioPlayer.play()
-                .then(() => {
-                    showNotification(`Playing verse ${verseNumber}`);
-                })
-                .catch(error => {
-                    console.error('Audio playback failed:', error);
-                    // Fallback source
-                    const fallbackSource = `https://cdn.islamic.network/quran/audio/128/ar.alafasy/${currentSurah}/${verseNumber}.mp3`;
-                    audioPlayer.src = fallbackSource;
-                    audioPlayer.play()
-                        .then(() => showNotification(`Playing verse ${verseNumber}`))
-                        .catch(err => {
-                            console.error('Fallback audio also failed:', err);
-                            alert('Audio could not be played. Please check your connection.');
-                        });
-                });
-        }
-        
-        // Play full surah audio (starts from verse 1)
-        function playFullSurahAudio() {
-            if (!currentSurah) return;
-            playVerseAudio(1);
-        }
-        
-        // Toggle translation visibility
-        function toggleTranslation() {
-            showTranslation = !showTranslation;
-            if (currentSurah) {
-                renderVerses();
-            }
-        }
-        
-        // Scroll to Bismillah
-        function scrollToBismillah() {
-            if (surahsWithBismillah.includes(currentSurah)) {
-                bismillahContainer.scrollIntoView({ behavior: 'smooth' });
-            } else {
-                alert('This surah (At-Tawbah) does not begin with Bismillah.');
-            }
-        }
-        
-        // Share verse
-        function shareVerse(verseNumber) {
-            const surahName = currentSurahData.englishName;
-            const verseText = verses.find(v => v.numberInSurah === verseNumber)?.text || '';
-            const englishText = englishTranslations.find((_, i) => verses[i].numberInSurah === verseNumber)?.text || '';
-            
-            const shareText = `Quran ${surahName}, Verse ${verseNumber}\n\n${verseText}\n\n${englishText}\n\nRead more at: ${window.location.href}`;
-            
-            if (navigator.share) {
-                navigator.share({
-                    title: `Quran ${surahName}, Verse ${verseNumber}`,
-                    text: shareText,
-                    url: window.location.href
-                });
-            } else {
-                navigator.clipboard.writeText(shareText).then(() => {
-                    showNotification('Verse copied to clipboard');
-                });
-            }
-        }
-        
-        // Bookmark verse
-        function bookmarkVerse(verseNumber) {
-            const bookmarks = JSON.parse(localStorage.getItem('quranBookmarks') || '[]');
-            const bookmark = {
-                surah: currentSurah,
-                verse: verseNumber,
-                surahName: currentSurahData.englishName,
-                date: new Date().toISOString()
-            };
-            
-            // Check if already bookmarked
-            const exists = bookmarks.some(b => b.surah === currentSurah && b.verse === verseNumber);
-            
-            if (!exists) {
-                bookmarks.push(bookmark);
-                localStorage.setItem('quranBookmarks', JSON.stringify(bookmarks));
-                showNotification('Verse bookmarked');
-            } else {
-                showNotification('Already bookmarked');
-            }
-        }
-        
-        // Show notification
-        function showNotification(message) {
-            // Create notification element
-            const notification = document.createElement('div');
-            notification.style.cssText = `
-                position: fixed;
-                bottom: 20px;
-                right: 20px;
-                background: var(--primary);
-                color: white;
-                padding: 12px 20px;
-                border-radius: 6px;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-                z-index: 1000;
-                animation: slideIn 0.3s ease;
-            `;
-            
-            // Add animation
-            const style = document.createElement('style');
-            style.textContent = `
-                @keyframes slideIn {
-                    from { transform: translateX(100%); opacity: 0; }
-                    to { transform: translateX(0); opacity: 1; }
-                }
-                @keyframes slideOut {
-                    from { transform: translateX(0); opacity: 1; }
-                    to { transform: translateX(100%); opacity: 0; }
-                }
-            `;
-            document.head.appendChild(style);
-            
-            notification.innerHTML = `
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <i class="fas fa-check-circle"></i>
-                    <span>${message}</span>
-                </div>
-            `;
-            
-            document.body.appendChild(notification);
-            
-            // Remove after 3 seconds
-            setTimeout(() => {
-                notification.style.animation = 'slideOut 0.3s ease';
-                setTimeout(() => notification.remove(), 300);
-            }, 3000);
-        }
-        
-        // Show surah list
-        function showSurahList() {
-            content.style.display = 'none';
-            surahList.style.display = 'block';
-        }
-        
-        // Initialize app
-        init();
+        // JavaScript will be embedded
     </script>
 </body>
 </html>
