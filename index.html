@@ -1,386 +1,1078 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quran - Complete Audio & Facts</title>
+    <title>Quran - Read & Listen</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Poppins:wght@300;400;500;600&family=Noto+Nastaliq+Urdu&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri&family=Poppins:wght@300;400;500;600&family=Noto+Nastaliq+Urdu&display=swap" rel="stylesheet">
     <style>
-        /* CSS will be embedded for immediate effect */
+        /* Color Scheme */
+        :root {
+            --primary-green: #1a472a;
+            --dark-green: #0d2818;
+            --light-green: #2d6a4f;
+            --accent-red: #c62828;
+            --accent-gold: #c2a15e;
+            --bg-white: #ffffff;
+            --bg-light: #f5f5f5;
+            --text-black: #1a1a1a;
+            --text-dark: #333333;
+            --text-light: #666666;
+            --border-color: #e0e0e0;
+            --shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        /* Reset & Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg-light);
+            color: var(--text-black);
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            background: var(--primary-green);
+            color: white;
+            padding: 15px 0;
+            box-shadow: var(--shadow);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            font-size: 28px;
+            color: var(--accent-gold);
+        }
+
+        .logo h1 {
+            font-family: 'Amiri', serif;
+            font-size: 24px;
+        }
+
+        .nav-controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        /* Main Layout */
+        .main-container {
+            max-width: 1200px;
+            margin: 80px auto 20px;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 20px;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background: var(--bg-white);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+            height: calc(100vh - 100px);
+            position: sticky;
+            top: 80px;
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light-green);
+        }
+
+        .sidebar-header h3 {
+            color: var(--primary-green);
+            font-size: 18px;
+        }
+
+        .surah-list {
+            max-height: calc(100vh - 200px);
+            overflow-y: auto;
+        }
+
+        .surah-item {
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            background: var(--bg-light);
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-left: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .surah-item:hover {
+            background: #e8f5e8;
+            border-left-color: var(--light-green);
+        }
+
+        .surah-item.active {
+            background: var(--primary-green);
+            color: white;
+            border-left-color: var(--accent-gold);
+        }
+
+        .surah-info {
+            flex: 1;
+        }
+
+        .surah-name-arabic {
+            font-family: 'Amiri', serif;
+            font-size: 18px;
+            margin-bottom: 3px;
+        }
+
+        .surah-name-english {
+            font-size: 12px;
+            opacity: 0.8;
+        }
+
+        .surah-item.active .surah-name-english {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .surah-number {
+            background: var(--accent-gold);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        /* Main Content */
+        .content {
+            background: var(--bg-white);
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            min-height: calc(100vh - 100px);
+        }
+
+        /* Content Header */
+        .content-header {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--light-green);
+        }
+
+        .surah-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .surah-title-text {
+            font-family: 'Amiri', serif;
+            font-size: 28px;
+            color: var(--primary-green);
+        }
+
+        .audio-controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .audio-btn {
+            background: var(--light-green);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .audio-btn:hover {
+            background: var(--primary-green);
+            transform: translateY(-2px);
+        }
+
+        .audio-btn.active {
+            background: var(--accent-red);
+        }
+
+        .surah-meta {
+            display: flex;
+            gap: 20px;
+            font-size: 14px;
+            color: var(--text-light);
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Verses */
+        .verses-container {
+            margin-top: 20px;
+        }
+
+        .verse-card {
+            background: var(--bg-light);
+            padding: 25px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            border-left: 4px solid var(--light-green);
+            transition: all 0.3s ease;
+        }
+
+        .verse-card:hover {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .verse-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .verse-number {
+            background: var(--primary-green);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .verse-audio-controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .verse-audio-btn {
+            background: none;
+            border: 1px solid var(--light-green);
+            color: var(--light-green);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .verse-audio-btn:hover {
+            background: var(--light-green);
+            color: white;
+        }
+
+        .verse-audio-btn.playing {
+            background: var(--accent-red);
+            color: white;
+            border-color: var(--accent-red);
+        }
+
+        /* Arabic Text */
+        .arabic-text {
+            font-family: 'Amiri', serif;
+            font-size: 32px;
+            direction: rtl;
+            color: var(--text-black);
+            line-height: 1.8;
+            text-align: justify;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: rgba(26, 71, 42, 0.03);
+            border-radius: 8px;
+        }
+
+        /* Translations */
+        .translations {
+            margin-top: 20px;
+        }
+
+        .translation-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        .translation-tab {
+            background: none;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            color: var(--text-light);
+            transition: all 0.3s ease;
+        }
+
+        .translation-tab.active {
+            background: var(--light-green);
+            color: white;
+        }
+
+        .translation-content {
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .english-translation {
+            font-size: 16px;
+            line-height: 1.7;
+            color: var(--text-dark);
+        }
+
+        .urdu-translation {
+            font-family: 'Noto Nastaliq Urdu', 'Amiri', serif;
+            font-size: 18px;
+            line-height: 1.8;
+            direction: rtl;
+            text-align: right;
+            color: var(--text-dark);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--dark-green);
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+        }
+
+        /* Loading */
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+            font-size: 18px;
+            color: var(--primary-green);
+        }
+
+        .spinner {
+            border: 4px solid rgba(0,0,0,0.1);
+            border-radius: 50%;
+            border-top: 4px solid var(--primary-green);
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin-right: 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .main-container {
+                grid-template-columns: 250px 1fr;
+            }
+            
+            .arabic-text {
+                font-size: 28px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                height: auto;
+                position: static;
+                max-height: 300px;
+            }
+            
+            .content {
+                min-height: auto;
+            }
+            
+            .surah-title {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+            
+            .audio-controls {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .arabic-text {
+                font-size: 24px;
+            }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--light-green);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-green);
+        }
     </style>
 </head>
 <body>
-    <!-- Fixed Audio Player -->
-    <div class="fixed-audio-player">
-        <div class="audio-container">
-            <audio id="quranAudio" controls>
-                <source src="https://download.quranicaudio.com/quran/mishaari_raashid_al_3afaasee/001.mp3" type="audio/mpeg">
-            </audio>
-            <div class="audio-extra-controls">
-                <button id="fullSurahBtn" class="control-btn active">
-                    <i class="fas fa-play-circle"></i> Play Full Surah
-                </button>
-                <button id="continuousBtn" class="control-btn">
-                    <i class="fas fa-infinity"></i> Continuous
-                </button>
-                <div class="surah-selector">
-                    <select id="surahSelector">
-                        <option value="">Select Surah</option>
-                        <option value="1">1. Al-Fatihah (الفاتحة)</option>
-                        <option value="2">2. Al-Baqarah (البقرة)</option>
-                        <option value="36">36. Ya-Sin (يس)</option>
-                        <option value="55">55. Ar-Rahman (الرحمن)</option>
-                        <option value="67">67. Al-Mulk (الملك)</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Main Header -->
-    <header class="main-header">
+    <!-- Header -->
+    <header class="header">
         <div class="header-container">
-            <div class="logo-section">
-                <div class="logo">
-                    <i class="fas fa-quran"></i>
-                    <h1>القرآن الكريم</h1>
-                    <p class="tagline">Guidance for Mankind</p>
-                </div>
+            <div class="logo">
+                <i class="fas fa-quran"></i>
+                <h1>القرآن الكريم | The Noble Quran</h1>
             </div>
-            
-            <nav class="main-nav">
-                <ul class="nav-list">
-                    <li><a href="#home" class="nav-link active"><i class="fas fa-home"></i> Home</a></li>
-                    <li><a href="#facts" class="nav-link"><i class="fas fa-lightbulb"></i> Quran Facts</a></li>
-                    <li><a href="#listen" class="nav-link"><i class="fas fa-headphones"></i> Listen</a></li>
-                    <li><a href="#about" class="nav-link"><i class="fas fa-info-circle"></i> About</a></li>
-                </ul>
-            </nav>
-            
-            <div class="language-toggle">
-                <button class="lang-btn active" data-lang="en">English</button>
-                <button class="lang-btn" data-lang="ur">اردو</button>
+            <div class="nav-controls">
+                <button id="themeToggle" class="audio-btn">
+                    <i class="fas fa-moon"></i> Theme
+                </button>
             </div>
         </div>
     </header>
 
-    <!-- Main Content -->
-    <main class="main-content">
-        <!-- Hero Section -->
-        <section id="home" class="hero-section">
-            <div class="hero-overlay">
-                <div class="hero-content">
-                    <h2 class="hero-title" data-en="Discover the Miracles of Quran" data-ur="قرآن کے معجزات دریافت کریں">
-                        Discover the Miracles of Quran
-                    </h2>
-                    <p class="hero-subtitle" data-en="Historical and Scientific Facts Revealed 1400 Years Ago" data-ur="1400 سال پہلے ظاہر ہونے والے تاریخی اور سائنسی حقائق">
-                        Historical and Scientific Facts Revealed 1400 Years Ago
-                    </p>
-                    <div class="hero-buttons">
-                        <a href="#facts" class="btn-primary">
-                            <i class="fas fa-book-open"></i>
-                            <span data-en="Explore Facts" data-ur="حقائق دیکھیں">Explore Facts</span>
-                        </a>
-                        <a href="#listen" class="btn-secondary">
-                            <i class="fas fa-play"></i>
-                            <span data-en="Listen Now" data-ur="اب سنیں">Listen Now</span>
-                        </a>
-                    </div>
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h3>سورتیں | Surahs</h3>
+            </div>
+            <div class="surah-list" id="surahList">
+                <div class="loading">
+                    <div class="spinner"></div>
+                    Loading...
                 </div>
             </div>
-        </section>
+        </aside>
 
-        <!-- Quick Facts Cards -->
-        <section class="quick-facts">
-            <div class="container">
-                <h3 class="section-heading" data-en="Amazing Quran Facts" data-ur="قرآن کے حیرت انگیز حقائق">
-                    Amazing Quran Facts
-                </h3>
-                <div class="facts-grid">
-                    <div class="fact-card">
-                        <div class="fact-icon">
-                            <i class="fas fa-atom"></i>
-                        </div>
-                        <h4 data-en="Scientific Accuracy" data-ur="سائنسی درستگی">Scientific Accuracy</h4>
-                        <p data-en="Multiple scientific facts mentioned 1400 years before discovery" 
-                           data-ur="متعدد سائنسی حقائق دریافت سے 1400 سال پہلے بیان کیے گئے">
-                            Multiple scientific facts mentioned 1400 years before discovery
-                        </p>
-                    </div>
-                    
-                    <div class="fact-card">
-                        <div class="fact-icon">
-                            <i class="fas fa-history"></i>
-                        </div>
-                        <h4 data-en="Historical Precision" data-ur="تاریخی صحت">Historical Precision</h4>
-                        <p data-en="Historical events confirmed by modern archaeology" 
-                           data-ur="تاریخی واقعات جدید آثار قدیمہ سے تصدیق شدہ">
-                            Historical events confirmed by modern archaeology
-                        </p>
-                    </div>
-                    
-                    <div class="fact-card">
-                        <div class="fact-icon">
-                            <i class="fas fa-calculator"></i>
-                        </div>
-                        <h4 data-en="Numerical Miracles" data-ur="عددی معجزات">Numerical Miracles</h4>
-                        <p data-en="Mathematical patterns and word repetitions" 
-                           data-ur="ریاضیاتی پیٹرن اور الفاظ کی تکرار">
-                            Mathematical patterns and word repetitions
-                        </p>
-                    </div>
-                    
-                    <div class="fact-card">
-                        <div class="fact-icon">
-                            <i class="fas fa-globe"></i>
-                        </div>
-                        <h4 data-en="Preserved Text" data-ur="محفوظ متن">Preserved Text</h4>
-                        <p data-en="Unchanged since revelation, memorized by millions" 
-                           data-ur="نزول سے اب تک غیر تبدیل شدہ، لاکھوں لوگوں نے حفظ کیا">
-                            Unchanged since revelation, memorized by millions
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Detailed Facts Section -->
-        <section id="facts" class="detailed-facts">
-            <div class="container">
-                <h3 class="section-heading" data-en="Detailed Scientific & Historical Facts" data-ur="تفصیلی سائنسی اور تاریخی حقائق">
-                    Detailed Scientific & Historical Facts
-                </h3>
-                
-                <div class="fact-categories">
-                    <!-- Scientific Facts -->
-                    <div class="category">
-                        <div class="category-header">
-                            <i class="fas fa-flask"></i>
-                            <h4 data-en="Scientific Miracles" data-ur="سائنسی معجزات">Scientific Miracles</h4>
-                        </div>
-                        
-                        <div class="fact-item">
-                            <div class="fact-number">01</div>
-                            <div class="fact-details">
-                                <h5 data-en="Embryology" data-ur="علم اجنہ">Embryology</h5>
-                                <p data-en="Quran 23:14 accurately describes stages of embryonic development matching modern science." 
-                                   data-ur="قرآن 23:14 جنین کی نشوونما کے مراحل درست طور پر بیان کرتا ہے جو جدید سائنس سے میل کھاتا ہے۔">
-                                    Quran 23:14 accurately describes stages of embryonic development matching modern science.
-                                </p>
-                            </div>
-                        </div>
-                        
-                        <div class="fact-item">
-                            <div class="fact-number">02</div>
-                            <div class="fact-details">
-                                <h5 data-en="Water Cycle" data-ur="پانی کا چکر">Water Cycle</h5>
-                                <p data-en="Quran 23:18 describes complete water cycle 1400 years before scientific discovery." 
-                                   data-ur="قرآن 23:18 سائنسی دریافت سے 1400 سال پہلے پانی کے مکمل چکر کی وضاحت کرتا ہے۔">
-                                    Quran 23:18 describes complete water cycle 1400 years before scientific discovery.
-                                </p>
-                            </div>
-                        </div>
-                        
-                        <div class="fact-item">
-                            <div class="fact-number">03</div>
-                            <div class="fact-details">
-                                <h5 data-en="Expanding Universe" data-ur="پھیلتا ہوا کائنات">Expanding Universe</h5>
-                                <p data-en="Quran 51:47 mentions universe expansion, discovered in 20th century." 
-                                   data-ur="قرآن 51:47 کائنات کے پھیلاؤ کا ذکر کرتا ہے، جو بیسویں صدی میں دریافت ہوا۔">
-                                    Quran 51:47 mentions universe expansion, discovered in 20th century.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <!-- Historical Facts -->
-                    <div class="category">
-                        <div class="category-header">
-                            <i class="fas fa-landmark"></i>
-                            <h4 data-en="Historical Accuracy" data-ur="تاریخی درستگی">Historical Accuracy</h4>
-                        </div>
-                        
-                        <div class="fact-item">
-                            <div class="fact-number">01</div>
-                            <div class="fact-details">
-                                <h5 data-en="Pharaoh's Body" data-ur="فرعون کی لاش">Pharaoh's Body</h5>
-                                <p data-en="Quran 10:92 prophesied preservation of Pharaoh's body, discovered in 1898." 
-                                   data-ur="قرآن 10:92 نے فرعون کی لاش کے محفوظ ہونے کی پیشنگوئی کی، جو 1898 میں دریافت ہوئی۔">
-                                    Quran 10:92 prophesied preservation of Pharaoh's body, discovered in 1898.
-                                </p>
-                            </div>
-                        </div>
-                        
-                        <div class="fact-item">
-                            <div class="fact-number">02</div>
-                            <div class="fact-details">
-                                <h5 data-en="City of Iram" data-ur="شہر ارم">City of Iram</h5>
-                                <p data-en="Lost city mentioned in Quran 89:7, discovered in 1990s by satellite imagery." 
-                                   data-ur="قرآن 89:7 میں مذکور کھوئی ہوئی شہر، 1990 کی دہائی میں سیٹلائٹ تصاویر سے دریافت ہوئی۔">
-                                    Lost city mentioned in Quran 89:7, discovered in 1990s by satellite imagery.
-                                </p>
-                            </div>
-                        </div>
-                        
-                        <div class="fact-item">
-                            <div class="fact-number">03</div>
-                            <div class="fact-details">
-                                <h5 data-en="Dead Sea" data-ur="بحیرہ مردار">Dead Sea</h5>
-                                <p data-en="Quran's description of destroyed civilizations matches Dead Sea archaeological finds." 
-                                   data-ur="قرآن کی تباہ شدہ تہذیبوں کی وضاحت بحیرہ مردار کے آثار قدیمہ سے میل کھاتی ہے۔">
-                                    Quran's description of destroyed civilizations matches Dead Sea archaeological finds.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Listen Section -->
-        <section id="listen" class="listen-section">
-            <div class="container">
-                <h3 class="section-heading" data-en="Listen to Complete Quran" data-ur="مکمل قرآن سنیں">
-                    Listen to Complete Quran
-                </h3>
-                
-                <div class="listen-options">
-                    <div class="option-card">
-                        <div class="option-icon">
-                            <i class="fas fa-play-circle"></i>
-                        </div>
-                        <h4 data-en="Play Full Surah" data-ur="مکمل سورہ سنیں">Play Full Surah</h4>
-                        <p data-en="Listen to complete Surah from beginning to end" 
-                           data-ur="مکمل سورہ شروع سے آخر تک سنیں">
-                            Listen to complete Surah from beginning to end
-                        </p>
-                        <button class="option-btn" id="fullSurahOption">
-                            <i class="fas fa-play"></i>
-                            <span data-en="Select & Play" data-ur="منتخب کریں اور سنیں">Select & Play</span>
+        <!-- Main Content -->
+        <main class="content">
+            <div class="content-header">
+                <div class="surah-title">
+                    <div class="surah-title-text" id="surahTitle">Select a Surah</div>
+                    <div class="audio-controls">
+                        <button id="fullSurahBtn" class="audio-btn">
+                            <i class="fas fa-play-circle"></i> Full Surah
+                        </button>
+                        <button id="continuousBtn" class="audio-btn">
+                            <i class="fas fa-infinity"></i> Continuous
                         </button>
                     </div>
-                    
-                    <div class="option-card">
-                        <div class="option-icon">
-                            <i class="fas fa-infinity"></i>
-                        </div>
-                        <h4 data-en="Continuous Play" data-ur="مسلسل سنیں">Continuous Play</h4>
-                        <p data-en="Play all Surahs continuously from 1 to 114" 
-                           data-ur="تمام سورتیں مسلسل 1 سے 114 تک سنیں">
-                            Play all Surahs continuously from 1 to 114
-                        </p>
-                        <button class="option-btn" id="continuousOption">
-                            <i class="fas fa-play"></i>
-                            <span data-en="Start Continuous" data-ur="مسلسل شروع کریں">Start Continuous</span>
-                        </button>
-                    </div>
-                    
-                    <div class="option-card">
-                        <div class="option-icon">
-                            <i class="fas fa-random"></i>
-                        </div>
-                        <h4 data-en="Select Surah" data-ur="سورہ منتخب کریں">Select Surah</h4>
-                        <p data-en="Choose specific Surah from dropdown menu" 
-                           data-ur="ڈراپ ڈاؤن مینو سے مخصوص سورہ منتخب کریں">
-                            Choose specific Surah from dropdown menu
-                        </p>
-                        <select class="surah-dropdown" id="listenSurahSelector">
-                            <option value="" data-en="Select a Surah" data-ur="سورہ منتخب کریں">Select a Surah</option>
-                            <option value="1">1. Al-Fatihah</option>
-                            <option value="2">2. Al-Baqarah</option>
-                            <option value="36">36. Ya-Sin</option>
-                            <option value="55">55. Ar-Rahman</option>
-                            <option value="67">67. Al-Mulk</option>
-                        </select>
-                    </div>
                 </div>
-                
-                <div class="now-playing">
-                    <h4 data-en="Now Playing" data-ur="اب سن رہے ہیں">Now Playing</h4>
-                    <div class="playing-info">
-                        <div class="playing-surah" id="currentSurahDisplay">
-                            <span data-en="Surah:" data-ur="سورہ:">Surah:</span>
-                            <strong>Al-Fatihah (1)</strong>
-                        </div>
-                        <div class="playing-mode" id="currentModeDisplay">
-                            <span data-en="Mode:" data-ur="موڈ:">Mode:</span>
-                            <strong>Full Surah</strong>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Additional Resources -->
-        <section class="resources-section">
-            <div class="container">
-                <h3 class="section-heading" data-en="Additional Resources" data-ur="اضافی ذرائع">
-                    Additional Resources
-                </h3>
-                <div class="resources-grid">
-                    <a href="#" class="resource-link">
+                <div class="surah-meta">
+                    <div class="meta-item" id="surahRevelation">
                         <i class="fas fa-book"></i>
-                        <span data-en="Quran Translation" data-ur="قرآن ترجمہ">Quran Translation</span>
-                    </a>
-                    <a href="#" class="resource-link">
-                        <i class="fas fa-graduation-cap"></i>
-                        <span data-en="Tafsir" data-ur="تفسیر">Tafsir</span>
-                    </a>
-                    <a href="#" class="resource-link">
-                        <i class="fas fa-microphone"></i>
-                        <span data-en="Recitations" data-ur="تلاوتیں">Recitations</span>
-                    </a>
-                    <a href="#" class="resource-link">
-                        <i class="fas fa-search"></i>
-                        <span data-en="Search Quran" data-ur="قرآن تلاش کریں">Search Quran</span>
-                    </a>
+                        <span>Select surah for details</span>
+                    </div>
+                    <div class="meta-item" id="surahAyahs">
+                        <i class="fas fa-verse"></i>
+                        <span>Verses: 0</span>
+                    </div>
                 </div>
             </div>
-        </section>
-    </main>
+
+            <div class="verses-container" id="versesContainer">
+                <div style="text-align: center; padding: 50px; color: var(--text-light);">
+                    <i class="fas fa-quran" style="font-size: 64px; color: var(--light-green); margin-bottom: 20px;"></i>
+                    <h3>Welcome to Quran Reader</h3>
+                    <p>Select a surah from the sidebar to start reading and listening</p>
+                </div>
+            </div>
+        </main>
+    </div>
 
     <!-- Footer -->
-    <footer class="main-footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-logo">
-                    <i class="fas fa-quran"></i>
-                    <h3>القرآن الكريم</h3>
-                    <p data-en="Source of Guidance & Wisdom" data-ur="ہدایت اور حکمت کا سرچشمہ">
-                        Source of Guidance & Wisdom
-                    </p>
-                </div>
-                
-                <div class="footer-links">
-                    <h4 data-en="Quick Links" data-ur="فوری لنکس">Quick Links</h4>
-                    <a href="#home"><i class="fas fa-home"></i> <span data-en="Home" data-ur="ہوم">Home</span></a>
-                    <a href="#facts"><i class="fas fa-lightbulb"></i> <span data-en="Facts" data-ur="حقائق">Facts</span></a>
-                    <a href="#listen"><i class="fas fa-headphones"></i> <span data-en="Listen" data-ur="سنیں">Listen</span></a>
-                </div>
-                
-                <div class="footer-info">
-                    <h4 data-en="Contact" data-ur="رابطہ">Contact</h4>
-                    <p><i class="fas fa-envelope"></i> info@quranwebsite.com</p>
-                    <div class="social-icons">
-                        <a href="#"><i class="fab fa-facebook"></i></a>
-                        <a href="#"><i class="fab fa-twitter"></i></a>
-                        <a href="#"><i class="fab fa-youtube"></i></a>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="footer-bottom">
-                <p>© 2024 Quran Website. <span data-en="All rights reserved." data-ur="تمام حقوق محفوظ ہیں۔">All rights reserved.</span></p>
-                <p data-en="Made with ❤️ for spreading Quranic knowledge" data-ur="قرآنی علم پھیلانے کے لئے ❤️ سے بنایا گیا">
-                    Made with ❤️ for spreading Quranic knowledge
-                </p>
-            </div>
-        </div>
+    <footer class="footer">
+        <p>© 2024 Quran Reader - Read, Listen & Understand</p>
+        <p style="margin-top: 10px; font-size: 0.9em;">
+            <i class="fas fa-heart" style="color: #ff6b6b;"></i>
+            May Allah bless all those who read and share the Quran
+        </p>
     </footer>
 
     <script>
-        // JavaScript will be embedded
+        // State management
+        const state = {
+            currentSurah: null,
+            currentSurahData: null,
+            verses: [],
+            translations: {
+                english: [],
+                urdu: []
+            },
+            audioMode: null, // 'full' or 'continuous'
+            currentAudio: null,
+            isPlaying: false,
+            surahs: []
+        };
+
+        // DOM Elements
+        const elements = {
+            surahList: document.getElementById('surahList'),
+            surahTitle: document.getElementById('surahTitle'),
+            versesContainer: document.getElementById('versesContainer'),
+            fullSurahBtn: document.getElementById('fullSurahBtn'),
+            continuousBtn: document.getElementById('continuousBtn'),
+            surahRevelation: document.getElementById('surahRevelation'),
+            surahAyahs: document.getElementById('surahAyahs'),
+            themeToggle: document.getElementById('themeToggle')
+        };
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', init);
+
+        async function init() {
+            await loadSurahList();
+            setupEventListeners();
+        }
+
+        // Load surah list
+        async function loadSurahList() {
+            try {
+                const response = await fetch('https://api.alquran.cloud/v1/surah');
+                const data = await response.json();
+                state.surahs = data.data;
+                renderSurahList(state.surahs);
+            } catch (error) {
+                console.error('Error loading surahs:', error);
+                elements.surahList.innerHTML = `
+                    <div style="color: var(--accent-red); padding: 20px; text-align: center;">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <p>Failed to load surahs. Please check your connection.</p>
+                        <button onclick="loadSurahList()" style="margin-top: 10px; padding: 8px 15px; background: var(--light-green); color: white; border: none; border-radius: 5px; cursor: pointer;">
+                            Retry
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        // Render surah list
+        function renderSurahList(surahs) {
+            elements.surahList.innerHTML = '';
+            
+            surahs.forEach(surah => {
+                const div = document.createElement('div');
+                div.className = 'surah-item';
+                div.dataset.id = surah.number;
+                
+                div.innerHTML = `
+                    <div class="surah-info">
+                        <div class="surah-name-arabic">${surah.name}</div>
+                        <div class="surah-name-english">${surah.englishName} • ${surah.englishNameTranslation}</div>
+                    </div>
+                    <div class="surah-number">${surah.number}</div>
+                `;
+                
+                div.onclick = () => loadSurah(surah.number);
+                elements.surahList.appendChild(div);
+            });
+        }
+
+        // Load a surah
+        async function loadSurah(surahId) {
+            state.currentSurah = surahId;
+            state.currentAudio?.pause();
+            state.isPlaying = false;
+            
+            // Update active surah in sidebar
+            document.querySelectorAll('.surah-item').forEach(item => {
+                item.classList.remove('active');
+                if (parseInt(item.dataset.id) === surahId) {
+                    item.classList.add('active');
+                }
+            });
+            
+            // Show loading
+            elements.versesContainer.innerHTML = `
+                <div class="loading">
+                    <div class="spinner"></div>
+                    Loading Surah...
+                </div>
+            `;
+            
+            try {
+                // Load surah data, verses, and translations
+                const [surahRes, versesRes, englishRes, urduRes] = await Promise.all([
+                    fetch(`https://api.alquran.cloud/v1/surah/${surahId}`),
+                    fetch(`https://api.alquran.cloud/v1/surah/${surahId}/quran-uthmani`),
+                    fetch(`https://api.alquran.cloud/v1/surah/${surahId}/en.sahih`),
+                    fetch(`https://api.alquran.cloud/v1/surah/${surahId}/ur.maududi`)
+                ]);
+                
+                const surahData = await surahRes.json();
+                const versesData = await versesRes.json();
+                const englishData = await englishRes.json();
+                const urduData = await urduRes.json();
+                
+                state.currentSurahData = surahData.data;
+                state.verses = versesData.data.ayahs;
+                state.translations.english = englishData.data.ayahs;
+                state.translations.urdu = urduData.data.ayahs;
+                
+                // Update UI
+                updateSurahHeader();
+                renderVerses();
+                
+            } catch (error) {
+                console.error('Error loading surah:', error);
+                elements.versesContainer.innerHTML = `
+                    <div style="color: var(--accent-red); padding: 50px; text-align: center;">
+                        <i class="fas fa-exclamation-triangle" style="font-size: 48px; margin-bottom: 20px;"></i>
+                        <h3>Failed to load surah</h3>
+                        <p>Please check your connection and try again.</p>
+                        <button onclick="loadSurah(${surahId})" style="margin-top: 20px; padding: 10px 20px; background: var(--light-green); color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">
+                            <i class="fas fa-redo"></i> Retry
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        // Update surah header
+        function updateSurahHeader() {
+            const surah = state.currentSurahData;
+            elements.surahTitle.textContent = `${surah.number}. ${surah.englishName} (${surah.name})`;
+            
+            elements.surahRevelation.innerHTML = `
+                <i class="fas fa-book"></i>
+                <span>${surah.revelationType} • ${surah.englishNameTranslation}</span>
+            `;
+            
+            elements.surahAyahs.innerHTML = `
+                <i class="fas fa-verse"></i>
+                <span>Verses: ${surah.numberOfAyahs}</span>
+            `;
+        }
+
+        // Render verses
+        function renderVerses() {
+            elements.versesContainer.innerHTML = '';
+            
+            state.verses.forEach((ayah, index) => {
+                const englishTranslation = state.translations.english[index]?.text || '';
+                const urduTranslation = state.translations.urdu[index]?.text || '';
+                
+                const verseDiv = document.createElement('div');
+                verseDiv.className = 'verse-card';
+                verseDiv.id = `ayah-${ayah.numberInSurah}`;
+                
+                verseDiv.innerHTML = `
+                    <div class="verse-header">
+                        <div class="verse-number">${ayah.numberInSurah}</div>
+                        <div class="verse-audio-controls">
+                            <button class="verse-audio-btn" data-ayah="${ayah.numberInSurah}">
+                                <i class="fas fa-play"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="arabic-text">${ayah.text}</div>
+                    
+                    <div class="translations">
+                        <div class="translation-tabs">
+                            <button class="translation-tab active" data-lang="english">English Translation</button>
+                            <button class="translation-tab" data-lang="urdu">اردو ترجمہ</button>
+                        </div>
+                        
+                        <div class="translation-content">
+                            <div class="english-translation translation-panel active">
+                                ${englishTranslation}
+                            </div>
+                            <div class="urdu-translation translation-panel">
+                                ${urduTranslation}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                elements.versesContainer.appendChild(verseDiv);
+            });
+            
+            // Add event listeners
+            setupVerseEventListeners();
+        }
+
+        // Setup verse event listeners
+        function setupVerseEventListeners() {
+            // Verse audio buttons
+            document.querySelectorAll('.verse-audio-btn').forEach(btn => {
+                btn.onclick = function() {
+                    const ayahNumber = this.dataset.ayah;
+                    playSingleAyah(ayahNumber, this);
+                };
+            });
+            
+            // Translation tabs
+            document.querySelectorAll('.translation-tab').forEach(tab => {
+                tab.onclick = function() {
+                    const lang = this.dataset.lang;
+                    
+                    // Update tabs
+                    document.querySelectorAll('.translation-tab').forEach(t => {
+                        t.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                    
+                    // Update content
+                    const parent = this.closest('.verse-card');
+                    parent.querySelectorAll('.translation-panel').forEach(panel => {
+                        panel.classList.remove('active');
+                    });
+                    parent.querySelector(`.${lang}-translation`).classList.add('active');
+                };
+            });
+        }
+
+        // Play single ayah
+        function playSingleAyah(ayahNumber, button) {
+            // Stop any currently playing audio
+            if (state.currentAudio) {
+                state.currentAudio.pause();
+                document.querySelectorAll('.verse-audio-btn').forEach(btn => {
+                    btn.classList.remove('playing');
+                    btn.innerHTML = '<i class="fas fa-play"></i>';
+                });
+                state.isPlaying = false;
+            }
+            
+            // If clicking the same button, toggle pause/play
+            if (button.classList.contains('playing')) {
+                state.currentAudio.pause();
+                button.classList.remove('playing');
+                button.innerHTML = '<i class="fas fa-play"></i>';
+                state.isPlaying = false;
+                return;
+            }
+            
+            // Play new ayah
+            const audioUrl = `https://cdn.islamic.network/quran/audio/128/ar.alafasy/${state.currentSurah}/${ayahNumber}.mp3`;
+            state.currentAudio = new Audio(audioUrl);
+            
+            // Update button state
+            document.querySelectorAll('.verse-audio-btn').forEach(btn => {
+                btn.classList.remove('playing');
+                btn.innerHTML = '<i class="fas fa-play"></i>';
+            });
+            button.classList.add('playing');
+            button.innerHTML = '<i class="fas fa-pause"></i>';
+            
+            state.currentAudio.play();
+            state.isPlaying = true;
+            
+            // Handle audio end
+            state.currentAudio.onended = function() {
+                button.classList.remove('playing');
+                button.innerHTML = '<i class="fas fa-play"></i>';
+                state.isPlaying = false;
+            };
+            
+            // Handle errors
+            state.currentAudio.onerror = function() {
+                button.classList.remove('playing');
+                button.innerHTML = '<i class="fas fa-play"></i>';
+                state.isPlaying = false;
+                alert('Failed to load audio. Please try again.');
+            };
+        }
+
+        // Play full surah
+        function playFullSurah() {
+            if (!state.currentSurah) return;
+            
+            // Stop any current audio
+            if (state.currentAudio) {
+                state.currentAudio.pause();
+                state.isPlaying = false;
+                document.querySelectorAll('.verse-audio-btn').forEach(btn => {
+                    btn.classList.remove('playing');
+                    btn.innerHTML = '<i class="fas fa-play"></i>';
+                });
+            }
+            
+            state.audioMode = 'full';
+            updateAudioButtons();
+            
+            const audioUrl = `https://cdn.islamic.network/quran/audio/128/ar.alafasy/${state.currentSurah}.mp3`;
+            state.currentAudio = new Audio(audioUrl);
+            
+            elements.fullSurahBtn.innerHTML = '<i class="fas fa-pause"></i> Pause';
+            
+            state.currentAudio.play();
+            state.isPlaying = true;
+            
+            state.currentAudio.onended = function() {
+                elements.fullSurahBtn.innerHTML = '<i class="fas fa-play-circle"></i> Full Surah';
+                state.isPlaying = false;
+            };
+            
+            state.currentAudio.onerror = function() {
+                elements.fullSurahBtn.innerHTML = '<i class="fas fa-play-circle"></i> Full Surah';
+                state.isPlaying = false;
+                alert('Failed to load audio. Please try again.');
+            };
+        }
+
+        // Play continuous (all surahs)
+        function playContinuous() {
+            if (!state.surahs.length) return;
+            
+            // Stop any current audio
+            if (state.currentAudio) {
+                state.currentAudio.pause();
+                state.isPlaying = false;
+            }
+            
+            state.audioMode = 'continuous';
+            updateAudioButtons();
+            
+            // Start from current surah or first surah
+            let surahToPlay = state.currentSurah || 1;
+            
+            function playNextSurah() {
+                if (surahToPlay <= 114) {
+                    const audioUrl = `https://cdn.islamic.network/quran/audio/128/ar.alafasy/${surahToPlay}.mp3`;
+                    state.currentAudio = new Audio(audioUrl);
+                    
+                    // Update UI to show currently playing surah
+                    document.querySelectorAll('.surah-item').forEach(item => {
+                        item.classList.remove('active');
+                        if (parseInt(item.dataset.id) === surahToPlay) {
+                            item.classList.add('active');
+                            loadSurah(surahToPlay);
+                        }
+                    });
+                    
+                    elements.continuousBtn.innerHTML = `<i class="fas fa-pause"></i> Playing ${surahToPlay}`;
+                    
+                    state.currentAudio.play();
+                    state.isPlaying = true;
+                    
+                    state.currentAudio.onended = function() {
+                        surahToPlay++;
+                        if (surahToPlay <= 114) {
+                            playNextSurah();
+                        } else {
+                            elements.continuousBtn.innerHTML = '<i class="fas fa-infinity"></i> Continuous';
+                            state.isPlaying = false;
+                            state.audioMode = null;
+                        }
+                    };
+                    
+                    state.currentAudio.onerror = function() {
+                        surahToPlay++;
+                        if (surahToPlay <= 114) {
+                            playNextSurah();
+                        }
+                    };
+                }
+            }
+            
+            playNextSurah();
+        }
+
+        // Update audio buttons
+        function updateAudioButtons() {
+            if (state.audioMode === 'full') {
+                elements.fullSurahBtn.classList.add('active');
+                elements.continuousBtn.classList.remove('active');
+            } else if (state.audioMode === 'continuous') {
+                elements.continuousBtn.classList.add('active');
+                elements.fullSurahBtn.classList.remove('active');
+            } else {
+                elements.fullSurahBtn.classList.remove('active');
+                elements.continuousBtn.classList.remove('active');
+            }
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Full surah button
+            elements.fullSurahBtn.onclick = function() {
+                if (!state.currentSurah) {
+                    alert('Please select a surah first');
+                    return;
+                }
+                
+                if (state.audioMode === 'full' && state.isPlaying) {
+                    // Pause if playing
+                    state.currentAudio.pause();
+                    this.innerHTML = '<i class="fas fa-play-circle"></i> Full Surah';
+                    state.isPlaying = false;
+                    state.audioMode = null;
+                } else {
+                    // Play or resume
+                    if (state.audioMode === 'full') {
+                        state.currentAudio.play();
+                        this.innerHTML = '<i class="fas fa-pause"></i> Pause';
+                        state.isPlaying = true;
+                    } else {
+                        playFullSurah();
+                    }
+                }
+            };
+            
+            // Continuous button
+            elements.continuousBtn.onclick = function() {
+                if (state.audioMode === 'continuous' && state.isPlaying) {
+                    // Pause if playing
+                    state.currentAudio.pause();
+                    this.innerHTML = '<i class="fas fa-infinity"></i> Continuous';
+                    state.isPlaying = false;
+                    state.audioMode = null;
+                } else {
+                    // Start continuous play
+                    playContinuous();
+                }
+            };
+            
+            // Theme toggle
+            elements.themeToggle.onclick = function() {
+                document.body.classList.toggle('dark-theme');
+                const isDark = document.body.classList.contains('dark-theme');
+                this.innerHTML = isDark ? 
+                    '<i class="fas fa-sun"></i> Light' : 
+                    '<i class="fas fa-moon"></i> Dark';
+            };
+            
+            // Keyboard shortcuts
+            document.addEventListener('keydown', function(e) {
+                if (e.key === ' ' && e.target.tagName !== 'INPUT' && e.target.tagName !== 'TEXTAREA') {
+                    e.preventDefault();
+                    if (state.currentAudio) {
+                        if (state.isPlaying) {
+                            state.currentAudio.pause();
+                            state.isPlaying = false;
+                            if (state.audioMode === 'full') {
+                                elements.fullSurahBtn.innerHTML = '<i class="fas fa-play-circle"></i> Full Surah';
+                            } else if (state.audioMode === 'continuous') {
+                                elements.continuousBtn.innerHTML = '<i class="fas fa-infinity"></i> Continuous';
+                            }
+                        } else {
+                            state.currentAudio.play();
+                            state.isPlaying = true;
+                            if (state.audioMode === 'full') {
+                                elements.fullSurahBtn.innerHTML = '<i class="fas fa-pause"></i> Pause';
+                            } else if (state.audioMode === 'continuous') {
+                                elements.continuousBtn.innerHTML = `<i class="fas fa-pause"></i> Playing ${state.currentSurah || 1}`;
+                            }
+                        }
+                    }
+                }
+                
+                // Escape key to stop audio
+                if (e.key === 'Escape' && state.currentAudio) {
+                    state.currentAudio.pause();
+                    state.isPlaying = false;
+                    state.audioMode = null;
+                    document.querySelectorAll('.verse-audio-btn').forEach(btn => {
+                        btn.classList.remove('playing');
+                        btn.innerHTML = '<i class="fas fa-play"></i>';
+                    });
+                    elements.fullSurahBtn.innerHTML = '<i class="fas fa-play-circle"></i> Full Surah';
+                    elements.continuousBtn.innerHTML = '<i class="fas fa-infinity"></i> Continuous';
+                    updateAudioButtons();
+                }
+            });
+        }
+
+        // Add dark theme CSS
+        const darkThemeCSS = `
+            body.dark-theme {
+                --primary-green: #0d2818;
+                --dark-green: #05140a;
+                --light-green: #1a472a;
+                --accent-red: #ff6b6b;
+                --accent-gold: #d4b483;
+                --bg-white: #1a1a1a;
+                --bg-light: #121212;
+                --text-black: #ffffff;
+                --text-dark: #e0e0e0;
+                --text-light: #b0b0b0;
+                --border-color: #333333;
+                --shadow: 0 2px 10px rgba(0,0,0,0.3);
+            }
+            
+            body.dark-theme .arabic-text {
+                color: #ffffff;
+            }
+            
+            body.dark-theme .verse-card {
+                background: #222222;
+            }
+            
+            body.dark-theme .translation-content {
+                background: #2a2a2a;
+                border-color: #333;
+            }
+        `;
+        
+        // Add dark theme styles
+        const style = document.createElement('style');
+        style.textContent = darkThemeCSS;
+        document.head.appendChild(style);
     </script>
 </body>
 </html>
