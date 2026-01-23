@@ -1,6 +1,169 @@
 <!DOCTYPE html>
 <html lang="en">
+<head><!DOCTYPE html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quran Website - Continuous Audio & Facts</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri&family=Poppins:wght@300;400;600&family=Noto+Nastaliq+Urdu&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Audio Player Container -->
+    <div class="audio-player">
+        <audio id="quranAudio" controls>
+            <source src="https://download.quranicaudio.com/quran/mishaari_raashid_al_3afaasee/001.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+        <div class="audio-controls">
+            <button id="prevBtn"><i class="fas fa-backward"></i></button>
+            <button id="playPauseBtn"><i class="fas fa-play"></i></button>
+            <button id="nextBtn"><i class="fas fa-forward"></i></button>
+            <button id="continuousBtn" class="active"><i class="fas fa-infinity"></i> Continuous</button>
+            <select id="surahSelector">
+                <option value="1">Surah Al-Fatihah</option>
+                <option value="2">Surah Al-Baqarah</option>
+                <option value="36">Surah Ya-Sin</option>
+                <option value="55">Surah Ar-Rahman</option>
+                <option value="67">Surah Al-Mulk</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-quran"></i>
+                <span>القرآن الكريم</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#home" class="active"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="#facts"><i class="fas fa-lightbulb"></i> Quran Facts</a></li>
+                <li><a href="#audio"><i class="fas fa-music"></i> Audio</a></li>
+                <li><a href="#about"><i class="fas fa-info-circle"></i> About</a></li>
+            </ul>
+            <div class="language-switcher">
+                <button class="lang-btn active" data-lang="en">EN</button>
+                <button class="lang-btn" data-lang="ur">اردو</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Cover Page with Quran Facts -->
+    <section id="home" class="cover-page">
+        <div class="cover-overlay">
+            <div class="cover-content">
+                <h1 class="cover-title" data-en="Amazing Facts About The Holy Quran" data-ur="قرآن پاک کے حیرت انگیز حقائق">
+                    Amazing Facts About The Holy Quran
+                </h1>
+                <p class="cover-subtitle" data-en="Historical & Scientific Miracles Revealed" data-ur="تاریخی اور سائنسی معجزات">
+                    Historical & Scientific Miracles Revealed
+                </p>
+                <a href="#facts" class="explore-btn">
+                    <i class="fas fa-book-open"></i>
+                    <span data-en="Explore Facts" data-ur="حقائق دریافت کریں">Explore Facts</span>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quran Facts Section -->
+    <section id="facts" class="facts-section">
+        <div class="container">
+            <h2 class="section-title" data-en="Scientific & Historical Facts in Quran" data-ur="قرآن میں سائنسی اور تاریخی حقائق">
+                Scientific & Historical Facts in Quran
+            </h2>
+            <p class="section-subtitle" data-en="Discover the miracles revealed centuries before modern science" data-ur="جدید سائنس سے صدیوں پہلے ظاہر ہونے والے معجزات دریافت کریں">
+                Discover the miracles revealed centuries before modern science
+            </p>
+
+            <div class="facts-container">
+                <!-- Scientific Facts -->
+                <div class="fact-category">
+                    <h3><i class="fas fa-atom"></i> <span data-en="Scientific Miracles" data-ur="سائنسی معجزات">Scientific Miracles</span></h3>
+                    <div class="fact-card">
+                        <div class="fact-icon">
+                            <i class="fas fa-water"></i>
+                        </div>
+                        <div class="fact-content">
+                            <h4 data-en="Water Cycle" data-ur="پانی کا چکر">Water Cycle</h4>
+                            <p data-en="Quran 23:18: 'And We send down water from the sky in perfect measure...' describing the water cycle 1400 years ago." 
+                               data-ur="قرآن 23:18: 'اور ہم آسمان سے پانی مناسب مقدار میں اتارتے ہیں...' 1400 سال پہلے پانی کے چکر کی وضاحت کرتا ہے۔">
+                                Quran 23:18: "And We send down water from the sky in perfect measure..." describing the water cycle 1400 years ago.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="fact-card">
+                        <div class="fact-icon">
+                            <i class="fas fa-mountain"></i>
+                        </div>
+                        <div class="fact-content">
+                            <h4 data-en="Mountains as Pegs" data-ur="پہاڑ میخیں ہیں">Mountains as Pegs</h4>
+                            <p data-en="Quran 78:7: 'And the mountains as pegs?' Mountains have deep roots like pegs, discovered in modern geology." 
+                               data-ur="قرآن 78:7: 'اور پہاڑوں کو میخوں کی طرح؟' جدید ارضیات میں دریافت ہوا کہ پہاڑوں کی گہری جڑیں ہیں۔">
+                                Quran 78:7: "And the mountains as pegs?" Mountains have deep roots like pegs, discovered in modern geology.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Historical Facts -->
+                <div class="fact-category">
+                    <h3><i class="fas fa-landmark"></i> <span data-en="Historical Accuracy" data-ur="تاریخی درستگی">Historical Accuracy</span></h3>
+                    <div class="fact-card">
+                        <div class="fact-icon">
+                            <i class="fas fa-pharaoh"></i>
+                        </div>
+                        <div class="fact-content">
+                            <h4 data-en="Pharaoh's Body" data-ur="فرعون کی لاش">Pharaoh's Body</h4>
+                            <p data-en="Quran 10:92: 'Today We will preserve your body...' Pharaoh's body was discovered in 1898, preserved for thousands of years." 
+                               data-ur="قرآن 10:92: 'آج ہم تیرا جسم محفوظ کر دیں گے...' فرعون کی لاش 1898 میں دریافت ہوئی، ہزاروں سال سے محفوظ تھی۔">
+                                Quran 10:92: "Today We will preserve your body..." Pharaoh's body was discovered in 1898, preserved for thousands of years.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="fact-card">
+                        <div class="fact-icon">
+                            <i class="fas fa-city"></i>
+                        </div>
+                        <div class="fact-content">
+                            <h4 data-en="Lost City of Iram" data-ur="کھوئی ہوئی شہر ارم">Lost City of Iram</h4>
+                            <p data-en="Quran 89:7 mentions the city of Iram with pillars. Discovered in 1990s by NASA satellite imagery." 
+                               data-ur="قرآن 89:7 میں ستونوں والے شہر ارم کا ذکر ہے۔ 1990 کی دہائی میں NASA کے سیٹلائٹ امیجری سے دریافت ہوا۔">
+                                Quran 89:7 mentions the city of Iram with pillars. Discovered in 1990s by NASA satellite imagery.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Additional Sections -->
+    <section id="audio" class="audio-section">
+        <div class="container">
+            <h2 class="section-title" data-en="Continuous Quran Audio" data-ur="مسلسل قرآن آڈیو">Continuous Quran Audio</h2>
+            <div class="audio-info">
+                <p data-en="Now playing continuously from Surah 1 to 114. Select any surah to start from there." 
+                   data-ur="اب سورہ 1 سے 114 تک مسلسل چل رہا ہے۔ کسی بھی سورت کو منتخب کریں وہاں سے شروع کرنے کے لیے۔">
+                    Now playing continuously from Surah 1 to 114. Select any surah to start from there.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>© 2024 Quran Website | Made with <i class="fas fa-heart"></i> for spreading knowledge</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>القرآن الكريم - The Noble Quran</title>
