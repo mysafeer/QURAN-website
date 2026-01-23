@@ -1,16 +1,30 @@
+// Audio Player Functionality
 document.addEventListener('DOMContentLoaded', function() {
-    // Audio player functionality
+    // Audio elements
     const audio = document.getElementById('quranAudio');
-    const playPauseBtn = document.getElementById('playPauseBtn');
-    const prevBtn = document.getElementById('prevBtn');
-    const nextBtn = document.getElementById('nextBtn');
+    const fullSurahBtn = document.getElementById('fullSurahBtn');
     const continuousBtn = document.getElementById('continuousBtn');
     const surahSelector = document.getElementById('surahSelector');
-    
+    const listenSurahSelector = document.getElementById('listenSurahSelector');
+    const fullSurahOption = document.getElementById('fullSurahOption');
+    const continuousOption = document.getElementById('continuousOption');
+    const currentSurahDisplay = document.getElementById('currentSurahDisplay');
+    const currentModeDisplay = document.getElementById('currentModeDisplay');
+
+    // State variables
     let currentSurah = 1;
+    let currentMode = 'full'; // 'full' or 'continuous'
     const totalSurahs = 114;
-    let isContinuous = true;
-    
+
+    // Surah names for display
+    const surahNames = {
+        1: "Al-Fatihah (1)",
+        2: "Al-Baqarah (2)",
+        36: "Ya-Sin (36)",
+        55: "Ar-Rahman (55)",
+        67: "Al-Mulk (67)"
+    };
+
     // Update audio source
     function updateAudioSource(surahNumber) {
         currentSurah = surahNumber;
@@ -18,80 +32,124 @@ document.addEventListener('DOMContentLoaded', function() {
         audio.src = surahUrl;
         audio.load();
         
-        // Update selector
+        // Update displays
+        updateSurahSelector(surahNumber);
+        updateDisplay();
+    }
+
+    // Update surah selector
+    function updateSurahSelector(surahNumber) {
         surahSelector.value = surahNumber;
+        listenSurahSelector.value = surahNumber;
+    }
+
+    // Update display information
+    function updateDisplay() {
+        const surahName = surahNames[currentSurah] || `Surah ${currentSurah}`;
+        currentSurahDisplay.innerHTML = `
+            <span>${document.documentElement.lang === 'ur' ? 'سورہ:' : 'Surah:'}</span>
+            <strong>${surahName}</strong>
+        `;
         
-        // Play automatically
-        if (!audio.paused) {
-            audio.play();
+        const modeText = currentMode === 'full' ? 
+            (document.documentElement.lang === 'ur' ? 'مکمل سورہ' : 'Full Surah') :
+            (document.documentElement.lang === 'ur' ? 'مسلسل' : 'Continuous');
+        currentModeDisplay.innerHTML = `
+            <span>${document.documentElement.lang === 'ur' ? 'موڈ:' : 'Mode:'}</span>
+            <strong>${modeText}</strong>
+        `;
+    }
+
+    // Set mode
+    function setMode(mode) {
+        currentMode = mode;
+        
+        // Update button states
+        fullSurahBtn.classList.toggle('active', mode === 'full');
+        continuousBtn.classList.toggle('active', mode === 'continuous');
+        
+        // Update display
+        updateDisplay();
+        
+        // If in continuous mode, set up auto-play next
+        if (mode === 'continuous') {
+            audio.onended = playNextSurah;
+        } else {
+            audio.onended = null;
         }
     }
-    
-    // Play next surah
+
+    // Play next surah (for continuous mode)
     function playNextSurah() {
         if (currentSurah < totalSurahs) {
             updateAudioSource(currentSurah + 1);
-        } else if (isContinuous) {
+            audio.play();
+        } else {
             // Loop back to first surah
             updateAudioSource(1);
+            audio.play();
         }
     }
-    
+
     // Play previous surah
     function playPrevSurah() {
         if (currentSurah > 1) {
             updateAudioSource(currentSurah - 1);
+            audio.play();
         }
     }
-    
-    // Event listeners
-    playPauseBtn.addEventListener('click', function() {
-        if (audio.paused) {
-            audio.play();
-            playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
-        } else {
-            audio.pause();
-            playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
-        }
+
+    // Event Listeners
+    fullSurahBtn.addEventListener('click', function() {
+        setMode('full');
     });
-    
-    nextBtn.addEventListener('click', playNextSurah);
-    prevBtn.addEventListener('click', playPrevSurah);
-    
+
     continuousBtn.addEventListener('click', function() {
-        isContinuous = !isContinuous;
-        continuousBtn.classList.toggle('active', isContinuous);
-        continuousBtn.innerHTML = isContinuous ? 
-            '<i class="fas fa-infinity"></i> Continuous' : 
-            '<i class="fas fa-times-circle"></i> Single';
+        setMode('continuous');
     });
-    
-    surahSelector.addEventListener('change', function() {
-        updateAudioSource(parseInt(this.value));
+
+    fullSurahOption.addEventListener('click', function() {
+        setMode('full');
+        updateDisplay();
     });
-    
-    // Audio ended event
-    audio.addEventListener('ended', function() {
-        if (isContinuous) {
-            playNextSurah();
+
+    continuousOption.addEventListener('click', function() {
+        setMode('continuous');
+        updateDisplay();
+        if (currentSurah < totalSurahs) {
+            updateAudioSource(currentSurah + 1);
         } else {
-            playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+            updateAudioSource(1);
+        }
+        audio.play();
+    });
+
+    surahSelector.addEventListener('change', function() {
+        const surahNumber = parseInt(this.value);
+        if (surahNumber) {
+            updateAudioSource(surahNumber);
+            audio.play();
         }
     });
-    
-    // Play state change
+
+    listenSurahSelector.addEventListener('change', function() {
+        const surahNumber = parseInt(this.value);
+        if (surahNumber) {
+            updateAudioSource(surahNumber);
+            audio.play();
+            setMode('full');
+        }
+    });
+
+    // Audio event listeners
     audio.addEventListener('play', function() {
-        playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+        updateDisplay();
     });
-    
-    audio.addEventListener('pause', function() {
-        playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
-    });
-    
-    // Language switching functionality
+
+    // Language Switching
     const langButtons = document.querySelectorAll('.lang-btn');
     const langElements = document.querySelectorAll('[data-en], [data-ur]');
-    
+
     langButtons.forEach(button => {
         button.addEventListener('click', function() {
             const lang = this.dataset.lang;
@@ -103,33 +161,47 @@ document.addEventListener('DOMContentLoaded', function() {
             // Update document language
             document.documentElement.lang = lang;
             
+            // Update direction
+            document.body.dir = lang === 'ur' ? 'rtl' : 'ltr';
+            
             // Update all translatable elements
             langElements.forEach(element => {
-                if (lang === 'en') {
-                    if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
-                        element.placeholder = element.dataset.en;
-                    } else {
-                        element.textContent = element.dataset.en;
+                if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA' || element.tagName === 'SELECT') {
+                    if (lang === 'en') {
+                        element.innerHTML = element.dataset.en;
+                    } else if (lang === 'ur') {
+                        element.innerHTML = element.dataset.ur;
                     }
-                } else if (lang === 'ur') {
-                    if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
-                        element.placeholder = element.dataset.ur;
-                    } else {
+                } else {
+                    if (lang === 'en') {
+                        element.textContent = element.dataset.en;
+                    } else if (lang === 'ur') {
                         element.textContent = element.dataset.ur;
                     }
                 }
             });
             
-            // Change audio player direction for Urdu
-            if (lang === 'ur') {
-                audio.style.direction = 'rtl';
-            } else {
-                audio.style.direction = 'ltr';
-            }
+            // Update select options for language
+            updateSelectOptions(lang);
+            
+            // Update display
+            updateDisplay();
         });
     });
-    
-    // Smooth scrolling for navigation links
+
+    // Update select options based on language
+    function updateSelectOptions(lang) {
+        const selectElements = document.querySelectorAll('select');
+        selectElements.forEach(select => {
+            Array.from(select.options).forEach(option => {
+                if (option.dataset.en && option.dataset.ur) {
+                    option.textContent = lang === 'en' ? option.dataset.en : option.dataset.ur;
+                }
+            });
+        });
+    }
+
+    // Smooth scrolling
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
             e.preventDefault();
@@ -145,11 +217,11 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
-    
-    // Update active navigation link on scroll
+
+    // Navigation active state
     window.addEventListener('scroll', function() {
-        const sections = document.querySelectorAll('section');
-        const navLinks = document.querySelectorAll('.nav-menu a');
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.nav-link');
         
         let currentSection = '';
         
@@ -157,7 +229,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const sectionTop = section.offsetTop;
             const sectionHeight = section.clientHeight;
             
-            if (scrollY >= (sectionTop - 200)) {
+            if (window.scrollY >= (sectionTop - 200)) {
                 currentSection = section.getAttribute('id');
             }
         });
@@ -169,73 +241,17 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
-    
-    // Initialize with first surah
+
+    // Initialize
     updateAudioSource(1);
+    setMode('full');
+    updateDisplay();
     
-    // Auto-play on user interaction (for browsers that require it)
+    // Auto-play on user interaction
     document.addEventListener('click', function initAudio() {
         if (audio.paused) {
             audio.play().catch(e => console.log("Auto-play prevented:", e));
         }
         document.removeEventListener('click', initAudio);
     });
-    
-    // Add visual feedback for current playing surah
-    audio.addEventListener('timeupdate', function() {
-        const progress = (audio.currentTime / audio.duration) * 100;
-        if (!isNaN(progress)) {
-            document.documentElement.style.setProperty('--audio-progress', `${progress}%`);
-        }
-    });
-});// Additional Quran facts for expansion
-const quranFacts = {
-    scientific: [
-        {
-            title: "Embryology",
-            en: "Quran 23:14 describes embryonic development stages accurately: 'Then We made the sperm-drop into a clinging clot...' matching modern embryology.",
-            ur: "قرآن 23:14 جنین کی نشوونما کے مراحل درست طور پر بیان کرتا ہے: 'پھر ہم نے نطفہ کو ایک لوتھڑے میں تبدیل کیا...' جدید علم اجنہ سے میل کھاتا ہے۔",
-            reference: "Quran 23:14"
-        },
-        {
-            title: "Expanding Universe",
-            en: "Quran 51:47: 'And the heaven We constructed with strength, and indeed, We are [its] expander.' Described 1400 years before Hubble's discovery.",
-            ur: "قرآن 51:47: 'اور آسمان ہم نے مضبوطی سے بنایا، اور ہم اس کو وسعت دینے والے ہیں۔' ہبل کی دریافت سے 1400 سال پہلے بیان کیا گیا۔",
-            reference: "Quran 51:47"
-        },
-        {
-            title: "Iron Came From Space",
-            en: "Quran 57:25: '...And We sent down iron, wherein is great military might and benefits for the people...' Modern science confirms iron came from meteorites.",
-            ur: "قرآن 57:25: '...اور ہم نے لوہا اتارا، جس میں سخت قوت ہے اور لوگوں کے لیے فوائد...' جدید سائنس تصدیق کرتی ہے کہ لوہا شہابِ ثاقب سے آیا۔",
-            reference: "Quran 57:25"
-        }
-    ],
-    historical: [
-        {
-            title: "People of the Cave",
-            en: "Quran 18:9-26 tells about the People of the Cave (Ashab al-Kahf) who slept for 309 years. Multiple historical sites match this description.",
-            ur: "قرآن 18:9-26 میں اصحاب کہف کا ذکر ہے جو 309 سال سوئے رہے۔ متعدد تاریخی مقامات اس وضاحت سے میل کھاتے ہیں۔",
-            reference: "Quran 18:9-26"
-        },
-        {
-            title: "Dead Sea Scrolls",
-            en: "The Quran's description of the destruction of Sodom and Gomorrah (Quran 15:74) matches archaeological findings near the Dead Sea.",
-            ur: "قرآن میں قوم لوط کے تباہ ہونے کی وضاحت (قرآن 15:74) بحیرہ مردار کے قریب آثار قدیمہ کے نتائج سے میل کھاتی ہے۔",
-            reference: "Quran 15:74"
-        }
-    ],
-    numerical: [
-        {
-            title: "Word Repetition Miracles",
-            en: "The word 'day' (yawm) appears 365 times, 'month' (shahr) 12 times, 'sea' (bahr) 32 times, 'land' (bar) 13 times - matching actual ratios (71% water, 29% land).",
-            ur: "لفظ 'دن' 365 بار، 'مہینہ' 12 بار، 'سمندر' 32 بار، 'زمین' 13 بار آتا ہے - اصل تناسب سے میل کھاتا ہے (71% پانی، 29% زمین)",
-            reference: "Numerical Miracle"
-        }
-    ]
-};
-
-// Function to add more facts dynamically
-function loadMoreFacts() {
-    // You can use this function to dynamically add more facts
-    console.log("Available facts loaded:", quranFacts);
-}
+});
