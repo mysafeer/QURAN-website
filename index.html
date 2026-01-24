@@ -3,209 +3,242 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Al-Quran | Modern Reader</title>
+    <title>Noor Al-Quran | Read & Listen</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Amiri&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Amiri&family=Inter:wght@300;400;600;800&family=Noto+Nastaliq+Urdu:wght@400;700&display=swap" rel="stylesheet">
     
     <style>
-        :root { --primary: #059669; }
-        body { font-family: 'Inter', sans-serif; }
-        .arabic-text { font-family: 'Amiri', serif; direction: rtl; }
-        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
+        :root {
+            --primary-green: #065f46;
+            --accent-red: #991b1b;
+            --deep-black: #0f172a;
+        }
+        body { font-family: 'Inter', sans-serif; background-color: #fcfcf9; }
+        .font-arabic { font-family: 'Amiri', serif; direction: rtl; }
+        .font-urdu { font-family: 'Noto Nastaliq Urdu', serif; direction: rtl; line-height: 2.8; }
         
+        /* Custom Scrollbar */
+        .custom-scroll::-webkit-scrollbar { width: 6px; }
+        .custom-scroll::-webkit-scrollbar-track { background: #f1f1f1; }
+        .custom-scroll::-webkit-scrollbar-thumb { background: var(--primary-green); border-radius: 10px; }
+
+        /* Glassmorphism Sidebar */
+        .sidebar-glass {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            color: white;
+        }
+
+        /* Verse Card Styling */
+        .verse-card {
+            border-left: 4px solid var(--primary-green);
+            transition: all 0.3s ease;
+        }
+        .verse-card:hover {
+            background: white;
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Toast Notification */
         #toast {
-            visibility: hidden; min-width: 200px; background: #059669; color: white;
-            text-align: center; border-radius: 12px; padding: 12px; position: fixed;
-            z-index: 100; bottom: 30px; left: 50%; transform: translateX(-50%);
+            visibility: hidden; min-width: 250px; background-color: var(--primary-green);
+            color: #fff; text-align: center; border-radius: 50px; padding: 16px;
+            position: fixed; z-index: 100; bottom: 30px; left: 50%; transform: translateX(-50%);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
         }
         #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
         @keyframes fadein { from {bottom: 0; opacity: 0;} to {bottom: 30px; opacity: 1;} }
         @keyframes fadeout { from {bottom: 30px; opacity: 1;} to {bottom: 0; opacity: 0;} }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-900">
+<body class="text-slate-900 overflow-hidden">
 
-    <div id="toast">Copied to clipboard!</div>
+    <div id="toast">Copied to Clipboard!</div>
 
-    <div class="flex h-screen overflow-hidden">
-        <aside class="w-80 bg-white border-r border-slate-200 flex flex-col hidden lg:flex">
-            <div class="p-6 border-b border-slate-100">
-                <h1 class="text-xl font-bold bg-gradient-to-r from-emerald-600 to-teal-500 bg-clip-text text-transparent mb-4">Al-Quran</h1>
-                
-                <div class="relative mb-4">
-                    <input type="text" id="surahSearch" onkeyup="filterSurahs()" placeholder="Search Surah..." 
-                        class="w-full pl-4 pr-4 py-2 bg-slate-100 border-none rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
+    <div class="flex h-screen">
+        <aside class="w-80 sidebar-glass flex flex-col hidden md:flex shadow-2xl">
+            <div class="p-6 border-b border-slate-700">
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-10 h-10 bg-emerald-500 rounded-lg flex items-center justify-center shadow-lg shadow-emerald-500/20">
+                        <span class="text-white font-bold text-xl">📖</span>
+                    </div>
+                    <h1 class="text-xl font-extrabold tracking-tight">NOOR QURAN</h1>
                 </div>
-
-                <div class="bg-slate-50 p-3 rounded-xl space-y-3">
-                    <div>
-                        <label class="text-[10px] font-bold text-slate-400 uppercase">Text Size</label>
-                        <input type="range" id="fontSize" min="24" max="60" value="32" oninput="updateFontSize(this.value)" class="w-full h-1 accent-emerald-600">
-                    </div>
-                    <div>
-                        <label class="text-[10px] font-bold text-slate-400 uppercase">Reciter</label>
-                        <select id="reciterSelect" onchange="changeReciter(this.value)" class="w-full text-xs bg-transparent border-none outline-none text-slate-600">
-                            <option value="ar.alafasy">Mishary Rashid Alafasy</option>
-                            <option value="ar.abdurrahmansudais">Abdurrahman Al-Sudais</option>
-                            <option value="ar.minshawi">Mohamed Siddiq El-Minshawi</option>
-                        </select>
-                    </div>
+                
+                <div class="relative">
+                    <input type="text" id="surahSearch" onkeyup="filterSurahs()" placeholder="Search Surah (e.g. 18 or Yaseen)" 
+                        class="w-full pl-10 pr-4 py-3 bg-slate-800/50 border border-slate-700 rounded-xl text-sm focus:ring-2 focus:ring-emerald-500 outline-none text-white transition-all">
+                    <span class="absolute left-3 top-3.5 opacity-40">🔍</span>
                 </div>
             </div>
 
-            <ul id="surah-list" class="flex-1 overflow-y-auto p-4 space-y-2 custom-scrollbar">
-                <div class="text-center py-10 text-slate-400 animate-pulse text-sm">Loading Surahs...</div>
-            </ul>
+            <div id="surahList" class="flex-1 overflow-y-auto custom-scroll p-4 space-y-2">
+                <div class="text-center py-10 opacity-20 italic">Loading chapters...</div>
+            </div>
         </aside>
 
-        <main class="flex-1 overflow-y-auto relative flex flex-col" id="main-content">
-            <div class="sticky top-0 z-10 bg-white/80 backdrop-blur-md border-b border-slate-200 p-4 px-8 flex items-center justify-between">
-                <div>
-                    <h2 id="current-surah-title" class="text-lg font-semibold text-slate-800 tracking-tight">Select a Surah</h2>
-                    <p id="surah-subtitle" class="text-xs text-slate-400 uppercase font-medium">Ready to read</p>
+        <main class="flex-1 flex flex-col relative overflow-hidden">
+            
+            <header class="h-24 bg-white/80 backdrop-blur-md border-b border-slate-200 flex items-center justify-between px-8 z-10">
+                <div class="flex items-center gap-6">
+                    <button class="md:hidden p-2 bg-slate-100 rounded-lg">☰</button>
+                    <div>
+                        <h2 id="activeTitle" class="text-2xl font-extrabold text-slate-800">Select a Surah</h2>
+                        <p id="activeSubtitle" class="text-xs font-bold text-emerald-600 uppercase tracking-widest">Bismillahir Rahmanir Rahim</p>
+                    </div>
                 </div>
-                <div id="progress-container" class="absolute bottom-0 left-0 h-[2px] bg-emerald-500 transition-all w-0"></div>
-            </div>
 
-            <div id="quran-container" class="max-w-4xl mx-auto py-12 px-6 space-y-12 w-full transition-opacity duration-300">
-                <div class="text-center py-20">
-                    <p class="text-slate-400">Please select a chapter from the sidebar to begin reading.</p>
+                <div class="flex items-center gap-4 bg-slate-100 p-2 rounded-2xl border border-slate-200 shadow-inner">
+                    <audio id="mainAudio" controls class="h-10 w-48 md:w-64 custom-audio"></audio>
+                    <div class="hidden lg:flex items-center gap-2 px-4 border-l border-slate-200">
+                        <label class="text-[10px] font-black text-slate-400 uppercase">Text Size</label>
+                        <input type="range" min="24" max="60" value="38" oninput="adjustFontSize(this.value)" class="w-20 accent-emerald-600">
+                    </div>
                 </div>
-            </div>
+            </header>
+
+            <div id="scrollProgress" class="h-1 bg-gradient-to-r from-emerald-600 to-emerald-400 w-0 transition-all duration-100 z-20"></div>
+
+            <section id="contentArea" class="flex-1 overflow-y-auto custom-scroll px-4 md:px-20 py-12 space-y-16">
+                <div class="flex flex-col items-center justify-center min-h-[60vh] text-center space-y-6">
+                    <div class="w-24 h-24 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center text-4xl animate-bounce">✨</div>
+                    <h3 class="text-3xl font-bold text-slate-800">Welcome to Noor Al-Quran</h3>
+                    <p class="text-slate-500 max-w-md mx-auto leading-relaxed">Select a Surah from the left menu to start reading with Urdu and English translations and beautiful audio recitation.</p>
+                </div>
+            </section>
         </main>
     </div>
 
     <script>
+        const RECITERS_ID = "ar.alafasy";
+        const URDU_EDITION = "ur.jalandhry";
+        const ENGLISH_EDITION = "en.sahih";
+        const ARABIC_EDITION = "quran-uthmani";
+        
         let allSurahs = [];
-        let currentSettings = {
-            fontSize: localStorage.getItem('quranFontSize') || '32',
-            reciter: localStorage.getItem('quranReciter') || 'ar.alafasy'
-        };
+        let currentSize = 38;
 
-        // Initialize App
+        // Start App
         async function init() {
-            document.getElementById('fontSize').value = currentSettings.fontSize;
-            document.getElementById('reciterSelect').value = currentSettings.reciter;
-            await loadSidebar();
-            
-            const saved = localStorage.getItem('lastReadSurah');
-            if (saved) handleSurahClick(saved);
-        }
-
-        async function loadSidebar() {
             try {
                 const res = await fetch('https://api.alquran.cloud/v1/surah');
                 const data = await res.json();
                 allSurahs = data.data;
-                renderList(allSurahs);
-            } catch (e) { console.error("Sidebar error", e); }
+                renderSidebar(allSurahs);
+                
+                const lastSurah = localStorage.getItem('noorLastRead') || 1;
+                loadSurah(lastSurah);
+            } catch (e) {
+                console.error("Failed to load surahs", e);
+            }
         }
 
-        function renderList(list) {
-            const container = document.getElementById('surah-list');
+        function renderSidebar(list) {
+            const container = document.getElementById('surahList');
             container.innerHTML = list.map(s => `
-                <li>
-                    <button onclick="handleSurahClick(${s.number})" id="btn-${s.number}" 
-                        class="surah-btn w-full text-left px-4 py-3 rounded-xl hover:bg-emerald-50 transition-all flex justify-between items-center group">
-                        <div class="flex items-center gap-3">
-                            <span class="text-xs font-bold text-slate-300 w-6">${s.number}</span>
-                            <div>
-                                <p class="text-sm font-semibold text-slate-700 group-hover:text-emerald-700">${s.englishName}</p>
-                            </div>
+                <button onclick="loadSurah(${s.number})" id="surah-btn-${s.number}" 
+                    class="surah-item w-full text-left p-4 rounded-xl hover:bg-emerald-500/10 transition-all flex justify-between items-center group">
+                    <div class="flex items-center gap-4">
+                        <span class="text-[10px] font-black opacity-30 w-4">${s.number}</span>
+                        <div>
+                            <p class="text-sm font-bold text-slate-200 group-hover:text-emerald-400 transition-colors">${s.englishName}</p>
+                            <p class="text-[10px] text-slate-500 uppercase tracking-tighter">${s.englishNameTranslation}</p>
                         </div>
-                        <span class="arabic-text text-lg text-slate-400 group-hover:text-emerald-600">${s.name}</span>
-                    </button>
-                </li>
+                    </div>
+                    <span class="font-arabic text-xl text-slate-500 group-hover:text-emerald-500">${s.name}</span>
+                </button>
             `).join('');
         }
 
-        function filterSurahs() {
-            const query = document.getElementById('surahSearch').value.toLowerCase();
-            const filtered = allSurahs.filter(s => s.englishName.toLowerCase().includes(query) || s.number == query);
-            renderList(filtered);
-        }
-
-        function handleSurahClick(num) {
-            localStorage.setItem('lastReadSurah', num);
-            document.querySelectorAll('.surah-btn').forEach(b => b.classList.remove('bg-emerald-100', 'text-emerald-700'));
-            const active = document.getElementById(`btn-${num}`);
-            if(active) active.classList.add('bg-emerald-100', 'text-emerald-700');
-            fetchSurah(num);
-        }
-
-        async function fetchSurah(num) {
-            const container = document.getElementById('quran-container');
-            container.style.opacity = '0.4';
+        async function loadSurah(num) {
+            const container = document.getElementById('contentArea');
+            const audio = document.getElementById('mainAudio');
+            const title = document.getElementById('activeTitle');
+            const subtitle = document.getElementById('activeSubtitle');
             
+            // Save state
+            localStorage.setItem('noorLastRead', num);
+            container.style.opacity = "0.3";
+            
+            // Highlight Active
+            document.querySelectorAll('.surah-item').forEach(b => b.classList.remove('bg-emerald-600/20', 'border', 'border-emerald-500/30'));
+            const activeBtn = document.getElementById(`surah-btn-${num}`);
+            if(activeBtn) activeBtn.classList.add('bg-emerald-600/20', 'border', 'border-emerald-500/30');
+
             try {
-                const res = await fetch(`https://api.alquran.cloud/v1/surah/${num}/editions/quran-uthmani,en.sahih,${currentSettings.reciter}`);
+                const res = await fetch(`https://api.alquran.cloud/v1/surah/${num}/editions/${ARABIC_EDITION},${ENGLISH_EDITION},${URDU_EDITION}`);
                 const data = await res.json();
                 
-                const arabic = data.data[0];
-                const english = data.data[1];
-                const audio = data.data[2];
+                const ar = data.data[0];
+                const en = data.data[1];
+                const ur = data.data[2];
 
-                document.getElementById('current-surah-title').innerText = arabic.englishName;
-                document.getElementById('surah-subtitle').innerText = `${arabic.revelationType} • ${arabic.numberOfAyahs} Ayahs`;
+                title.innerText = ar.englishName;
+                subtitle.innerText = `${ar.revelationType} • ${ar.numberOfAyahs} Ayahs • ${ar.englishNameTranslation}`;
+                
+                // Set Audio
+                audio.src = `https://cdn.islamic.network/quran/audio-surah/128/${RECITERS_ID}/${num}.mp3`;
 
-                container.innerHTML = arabic.ayahs.map((ayah, i) => `
-                    <div class="group relative py-10 border-b border-slate-100 transition-all">
-                        <div class="flex justify-between items-start mb-6">
-                            <span class="text-emerald-500 font-mono text-xs p-2 bg-emerald-50 rounded-lg">Verse ${ayah.numberInSurah}</span>
-                            <p class="arabic-text text-right text-slate-800 w-full" style="font-size: ${currentSettings.fontSize}px; line-height: 1.8;">
+                container.innerHTML = ar.ayahs.map((ayah, i) => `
+                    <div class="verse-card bg-slate-50/50 p-6 md:p-10 rounded-3xl space-y-8 relative overflow-hidden group">
+                        <div class="absolute top-0 left-0 bg-red-800 text-white text-[10px] font-black px-4 py-1 rounded-br-xl shadow-lg">
+                            VERSE ${ayah.numberInSurah}
+                        </div>
+
+                        <div class="flex justify-end">
+                            <p class="font-arabic text-right text-slate-800 leading-snug w-full arabic-dynamic" style="font-size: ${currentSize}px">
                                 ${ayah.text}
                             </p>
                         </div>
-                        <div class="flex gap-6 items-start max-w-2xl">
-                            <div class="flex flex-col gap-2">
-                                <button onclick="playVerse(this, '${audio.ayahs[i].audio}')" class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center hover:bg-emerald-600 hover:text-white transition-all">▶</button>
-                                <button onclick="copyAyah(\`${ayah.text}\`, \`${english.ayahs[i].text}\`, ${num}, ${ayah.numberInSurah})" class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center hover:bg-blue-600 hover:text-white transition-all">📋</button>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-10 pt-4 border-t border-slate-200/60">
+                            <div class="space-y-3 order-1 md:order-2">
+                                <label class="text-[9px] font-black text-red-700 uppercase tracking-widest block text-right">Urdu Translation</label>
+                                <p class="font-urdu text-2xl md:text-3xl text-slate-700 text-right">${ur.ayahs[i].text}</p>
                             </div>
-                            <p class="text-lg text-slate-500 font-light leading-relaxed">${english.ayahs[i].text}</p>
+                            
+                            <div class="space-y-3 order-2 md:order-1 border-t md:border-t-0 md:border-r border-slate-200/60 pt-4 md:pt-0 md:pr-10">
+                                <label class="text-[9px] font-black text-emerald-700 uppercase tracking-widest block">English Translation</label>
+                                <p class="text-lg text-slate-600 font-medium leading-relaxed italic">${en.ayahs[i].text}</p>
+                                <button onclick="copyVerse(\`${ayah.text}\`, \`${ur.ayahs[i].text}\`, ${num}, ${ayah.numberInSurah})" 
+                                    class="text-[10px] font-bold text-slate-400 hover:text-emerald-600 flex items-center gap-2 mt-4 transition-colors">
+                                    <span>📋 COPY VERSE</span>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 `).join('');
-                container.style.opacity = '1';
-                document.getElementById('main-content').scrollTop = 0;
-            } catch (e) { console.error(e); }
+
+                container.style.opacity = "1";
+                container.scrollTop = 0;
+            } catch (err) { console.error(err); }
         }
 
-        function playVerse(btn, url) {
-            const audio = new Audio(url);
-            btn.innerText = '⏳';
-            audio.play();
-            audio.onended = () => btn.innerText = '▶';
+        function filterSurahs() {
+            const term = document.getElementById('surahSearch').value.toLowerCase();
+            const filtered = allSurahs.filter(s => s.englishName.toLowerCase().includes(term) || s.number == term);
+            renderSidebar(filtered);
         }
 
-        function copyAyah(ar, en, s, a) {
-            const text = `${ar}\n\n${en}\n\n[Quran ${s}:${a}]`;
-            navigator.clipboard.writeText(text);
+        function adjustFontSize(val) {
+            currentSize = val;
+            document.querySelectorAll('.arabic-dynamic').forEach(p => p.style.fontSize = val + 'px');
+        }
+
+        function copyVerse(ar, ur, s, a) {
+            const fullText = `${ar}\n\n${ur}\n\n[Surah ${s}, Ayah ${a}]`;
+            navigator.clipboard.writeText(fullText);
             const t = document.getElementById("toast");
             t.className = "show";
-            setTimeout(() => { t.className = ""; }, 3000);
+            setTimeout(() => t.className = t.className.replace("show", ""), 3000);
         }
 
-        function updateFontSize(s) {
-            currentSettings.fontSize = s;
-            localStorage.setItem('quranFontSize', s);
-            document.querySelectorAll('.arabic-text').forEach(el => {
-                el.style.fontSize = s + 'px';
-            });
-        }
-
-        function changeReciter(r) {
-            currentSettings.reciter = r;
-            localStorage.setItem('quranReciter', r);
-            const saved = localStorage.getItem('lastReadSurah');
-            if(saved) fetchSurah(saved);
-        }
-
-        // Scroll Progress
-        document.getElementById('main-content').onscroll = function() {
-            const el = document.getElementById('main-content');
+        // Scroll Progress Bar Logic
+        document.getElementById('contentArea').onscroll = function() {
+            const el = document.getElementById('contentArea');
             const scrolled = (el.scrollTop / (el.scrollHeight - el.clientHeight)) * 100;
-            document.getElementById("progress-container").style.width = scrolled + "%";
+            document.getElementById("scrollProgress").style.width = scrolled + "%";
         };
 
         init();
