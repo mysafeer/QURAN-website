@@ -3,7 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quran Platform Starter</title>
+    <title>Quran Platform Starter</title><div class="flex h-screen overflow-hidden">
+    <aside class="w-64 bg-white border-r border-gray-200 overflow-y-auto hidden md:block" id="surah-sidebar">
+        <div class="p-4 border-b bg-emerald-50">
+            <h2 class="font-bold text-emerald-800 uppercase tracking-wider text-sm">Select Surah</h2>
+        </div>
+        <ul id="surah-list" class="divide-y divide-gray-100">
+            </ul>
+    </aside>
+
+    <main class="flex-1 overflow-y-auto bg-gray-50 p-6" id="main-content">
+        <div id="quran-container" class="max-w-3xl mx-auto space-y-6">
+            <p class="text-center text-gray-500 mt-20">Select a Surah from the list to start reading.</p>
+        </div>
+    </main>
+</div>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Amiri&display=swap" rel="stylesheet">
     <style>
