@@ -1,6 +1,13 @@
 // Fetch all Surahs for the sidebar
 async function loadSidebar() {
-    const listContainer = document.getElementById('surah-list');
+    const listContainer = document.getElementById('surah-list');// Add this to your main container scroll event
+const mainContent = document.getElementById('main-content');
+mainContent.onscroll = function() {
+    const winScroll = mainContent.scrollTop;
+    const height = mainContent.scrollHeight - mainContent.clientHeight;
+    const scrolled = (winScroll / height) * 100;
+    document.getElementById("progress-bar").style.width = scrolled + "%";
+};
     try {
         const response = await fetch('https://api.alquran.cloud/v1/surah');
         const data = await response.json();
